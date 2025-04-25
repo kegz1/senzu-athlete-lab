@@ -44,17 +44,52 @@ class ApiService {
   }
   
   getSportSpecificData(sport) {
-    // Define sport-specific training data
+    // Define comprehensive sport-specific training data
     const sportData = {
       'Running': {
-        movementPatterns: 'Cyclical lower body movement with emphasis on hip extension, knee extension, and ankle plantarflexion',
-        energySystems: 'Primary reliance on aerobic system for distances beyond 800m, with increasing anaerobic contribution as distance decreases',
-        injuryRisks: 'Achilles tendinopathy, plantar fasciitis, patellofemoral pain syndrome, IT band syndrome, stress fractures',
-        keyExercises: ['Progressive interval training', 'Hill sprints', 'Tempo runs', 'Long slow distance (LSD) runs'],
-        strengthFocus: ['Single-leg exercises', 'Hip abductor strengthening', 'Calf raises', 'Core stability work'],
+        biomechanics: {
+          description: 'Running involves a cyclical gait pattern with alternating single-leg support phases and flight phases. The kinetic chain activates in a sequential pattern from ground contact through toe-off.',
+          keyJointActions: 'Ankle dorsiflexion (loading) to plantarflexion (propulsion), knee flexion (loading) to extension (propulsion), hip extension (propulsion) with contralateral hip flexion.',
+          forceProduction: 'Ground reaction forces typically range from 2.5-3.0x body weight during footstrike, with elite sprinters generating up to 4.0x body weight.',
+          techniqueFactors: 'Stride length, stride frequency, ground contact time, flight time, vertical oscillation, and foot strike pattern (forefoot, midfoot, rearfoot).'
+        },
+        movementPatterns: 'Cyclical lower body movement with emphasis on hip extension, knee extension, and ankle plantarflexion. Running mechanics involve a stretch-shortening cycle utilizing elastic energy storage in the Achilles tendon and plantar fascia.',
+        energySystems: {
+          primary: 'Primarily aerobic for distances beyond 800m (>75% contribution for marathon), with increasing anaerobic contribution as distance decreases (400m: ~70% anaerobic, 100m: ~90% ATP-PC system).',
+          workRestRatios: 'Sprint intervals: 1:3-1:5 work:rest ratio for ATP-PC development; Tempo runs: Continuous effort at 85-90% max heart rate for glycolytic endurance.',
+          conditioningProtocols: 'Zone 2 training (65-75% max HR) for aerobic base development, VO2max intervals (90-95% max HR) for aerobic power, and sprint intervals for anaerobic capacity.'
+        },
+        muscleRecruitment: {
+          primaryMovers: 'Gluteus maximus, quadriceps (vastus lateralis, vastus medialis, rectus femoris), hamstrings (biceps femoris, semitendinosus, semimembranosus), gastrocnemius, soleus.',
+          stabilizers: 'Gluteus medius, core musculature (transverse abdominis, multifidus), tibialis anterior, peroneus longus.',
+          commonImbalances: 'Overactive quadriceps relative to hamstrings, weak gluteus medius leading to hip drop, tight hip flexors limiting hip extension.'
+        },
+        injuryRisks: {
+          common: 'Achilles tendinopathy, plantar fasciitis, patellofemoral pain syndrome, IT band syndrome, stress fractures, medial tibial stress syndrome (shin splints).',
+          prevention: 'Progressive loading, eccentric calf strengthening, hip abductor/external rotator strengthening, regular footwear rotation, and gradual mileage progression (10% rule).'
+        },
+        performanceMetrics: {
+          keyIndicators: 'VO2max, lactate threshold, running economy (oxygen cost at submaximal speeds), maximal aerobic speed, critical speed, anaerobic capacity.',
+          benchmarks: 'Elite male marathon runners: VO2max >70 ml/kg/min, running economy <200 ml/kg/km at marathon pace; Elite female marathon runners: VO2max >65 ml/kg/min.'
+        },
+        keyExercises: [
+          'Progressive interval training (400m, 800m, 1600m repeats)',
+          'Hill sprints (10-15 second maximal effort uphill runs)',
+          'Tempo runs (20-40 minutes at lactate threshold pace)',
+          'Long slow distance (LSD) runs (60-150 minutes at 65-75% max heart rate)'
+        ],
+        strengthFocus: [
+          'Single-leg exercises (Bulgarian split squats, single-leg deadlifts)',
+          'Hip abductor strengthening (clamshells, lateral band walks)',
+          'Calf raises (both straight-leg and bent-knee variations)',
+          'Core stability work (planks, Pallof press, dead bugs)'
+        ],
         references: [
-          'Napier C, et al. "Kinetic risk factors of running-related injuries in female recreational runners." Scand J Med Sci Sports, 28(10), 2018.',
-          'Barnes KR, et al. "Strategies to Improve Running Economy in Trained Distance Runners." Sports Medicine, 45, 2015.'
+          'Napier C, et al. "Kinetic risk factors of running-related injuries in female recreational runners." Scandinavian Journal of Medicine & Science in Sports, 28(10), 2018.',
+          'Barnes KR, et al. "Strategies to Improve Running Economy in Trained Distance Runners." Sports Medicine, 45, 2015.',
+          'Novacheck TF. "The biomechanics of running." Gait & Posture, 7(1), 1998.',
+          'Jones AM, et al. "The three-minute all-out test for aerobic function." Medicine & Science in Sports & Exercise, 42(5), 2010.',
+          'Lieberman DE, et al. "Foot strike patterns and collision forces in habitually barefoot versus shod runners." Nature, 463(7280), 2010.'
         ]
       },
       'Swimming': {
@@ -206,48 +241,109 @@ class ApiService {
   }
   
   generateQuickResponse(sport, experience, goal, sportData, experienceData, goalData) {
+    // Extract injury risks from the object if it exists in that format
+    const injuryRisks = sportData.injuryRisks.common ?
+      sportData.injuryRisks.common.split(',')[0].toLowerCase() :
+      sportData.injuryRisks.split(',')[0].toLowerCase();
+    
+    // Extract energy systems information
+    const energySystems = sportData.energySystems.primary ?
+      sportData.energySystems.primary :
+      sportData.energySystems;
+    
     return `# ${sport} Training Plan for ${experience} - ${goal}
+
+## Biomechanical Analysis & Training Focus
+
+${sportData.biomechanics ? sportData.biomechanics.description : 'Sport-specific movement patterns with unique biomechanical demands.'}
+
+### Key Movement Patterns
+${sportData.movementPatterns}
+
+### Primary Muscle Groups
+${sportData.muscleRecruitment ? `Primary Movers: ${sportData.muscleRecruitment.primaryMovers}
+Stabilizers: ${sportData.muscleRecruitment.stabilizers}` : 'Sport-specific muscle recruitment patterns.'}
 
 ## Training Schedule
 
-### Day 1: Strength & Movement Patterns
-- Warm-up: 10 minutes of dynamic mobility focusing on ${sportData.movementPatterns.split(',')[0].toLowerCase()}
+### Day 1: Strength & Movement Development
+- Warm-up: 10-15 minutes of dynamic mobility focusing on ${sportData.biomechanics ? sportData.biomechanics.keyJointActions.split(',')[0].toLowerCase() : 'sport-specific movement patterns'}
 - Main workout: ${experienceData.volumeModifier} with emphasis on ${goalData.trainingEmphasis}
   * ${sportData.strengthFocus[0]}
   * ${sportData.strengthFocus[1]}
-- Cool-down: 5 minutes of targeted mobility work
+- Technical focus: ${sportData.biomechanics ? sportData.biomechanics.techniqueFactors.split(',')[0] : 'Sport-specific technique development'}
+- Cool-down: 5-10 minutes of targeted mobility work
 
 ### Day 2: Sport-Specific Development
-- Warm-up: Sport-specific activation drills
+- Warm-up: Sport-specific activation drills targeting ${sportData.muscleRecruitment ? sportData.muscleRecruitment.primaryMovers.split(',')[0] : 'primary movers'}
 - Main workout: ${sportData.keyExercises[0]} and ${sportData.keyExercises[1]}
+- Energy system training: ${sportData.energySystems.workRestRatios ? sportData.energySystems.workRestRatios.split(';')[0] : 'Sport-specific conditioning'}
 - Technical focus: ${experienceData.techniqueEmphasis}
-- Cool-down: Mobility exercises for ${sportData.injuryRisks.split(',')[0].toLowerCase()} prevention
+- Cool-down: Mobility exercises for ${injuryRisks} prevention
 
 ### Day 3: Recovery & Supplementary Work
 - Active recovery: 20-30 minutes of low-intensity activity
-- Targeted work for injury prevention: Focus on ${sportData.injuryRisks.split(',')[0].toLowerCase()} and ${sportData.injuryRisks.split(',')[1].toLowerCase()}
+- Targeted work for injury prevention: Focus on ${injuryRisks} ${sportData.injuryRisks.prevention ? `using ${sportData.injuryRisks.prevention.split(',')[0]}` : ''}
 - ${goalData.supplementaryWork}
 
 ## Progression Plan
-${experienceData.progressionRate}. Track ${goalData.successMetrics.split(',')[0].toLowerCase()} as your primary metric.
+${experienceData.progressionRate}. Track ${sportData.performanceMetrics ? sportData.performanceMetrics.keyIndicators.split(',')[0].toLowerCase() : goalData.successMetrics.split(',')[0].toLowerCase()} as your primary metric.
 
 ## Nutrition Focus
-${goalData.nutritionFocus}`;
+${goalData.nutritionFocus}
+
+## Scientific Basis
+This program is based on research from:
+${sportData.references[0]}`;
   }
   
   generateDeepResponse(sport, experience, goal, sportData, experienceData, goalData) {
+    // Extract injury risks from the object if it exists in that format
+    const injuryRisks = sportData.injuryRisks.common ?
+      sportData.injuryRisks.common :
+      sportData.injuryRisks;
+    
+    // Extract energy systems information
+    const energySystems = sportData.energySystems.primary ?
+      sportData.energySystems.primary :
+      sportData.energySystems;
+    
     return `# Comprehensive ${sport} Training Plan for ${experience} - ${goal}
 
-## Needs Analysis
+## 🧠 Comprehensive Sport-Specific Analysis
 
-### Movement Patterns
-${sportData.movementPatterns}. These movement patterns form the foundation of our training approach, ensuring specificity and transfer to performance.
+### Key Movement Patterns & Biomechanics
+${sportData.biomechanics ? sportData.biomechanics.description : 'Sport-specific movement patterns with unique biomechanical demands.'}
 
-### Energy Systems
-${sportData.energySystems}. Training is structured to develop the appropriate energy system contribution based on ${sport} demands and ${goal.toLowerCase()} requirements.
+Key Joint Actions: ${sportData.biomechanics ? sportData.biomechanics.keyJointActions : 'Multi-joint coordination specific to the sport\'s technical requirements.'}
 
-### Injury Risk Assessment
-Common injury sites include ${sportData.injuryRisks}. This plan incorporates preventative exercises and load management strategies to minimize these risks.
+Force Production: ${sportData.biomechanics ? sportData.biomechanics.forceProduction : 'Force application varies based on the specific demands of the sport.'}
+
+Technique Factors: ${sportData.biomechanics ? sportData.biomechanics.techniqueFactors : 'Technical efficiency factors specific to the sport\'s performance requirements.'}
+
+### Energy System Demands
+${energySystems}
+
+Work-Rest Ratios: ${sportData.energySystems.workRestRatios ? sportData.energySystems.workRestRatios : 'Sport-specific work:rest ratios based on competitive demands.'}
+
+Conditioning Protocols: ${sportData.energySystems.conditioningProtocols ? sportData.energySystems.conditioningProtocols : 'Conditioning protocols designed to match the metabolic demands of the sport.'}
+
+### Primary Muscles Involved
+Primary Movers: ${sportData.muscleRecruitment ? sportData.muscleRecruitment.primaryMovers : 'Primary muscle groups specific to the sport\'s movement patterns.'}
+
+Stabilizers: ${sportData.muscleRecruitment ? sportData.muscleRecruitment.stabilizers : 'Stabilizing muscles supporting the primary movement patterns.'}
+
+Common Imbalances: ${sportData.muscleRecruitment ? sportData.muscleRecruitment.commonImbalances : 'Common muscular imbalances associated with the sport\'s repetitive movements.'}
+
+### Injury Risk & Prevention
+Common Injuries: ${sportData.injuryRisks.common ? sportData.injuryRisks.common : injuryRisks}
+
+Prevention Strategies: ${sportData.injuryRisks.prevention ? sportData.injuryRisks.prevention : 'Preventative strategies addressing the specific injury risks of the sport.'}
+
+### Performance Metrics to Track
+Key Indicators: ${sportData.performanceMetrics ? sportData.performanceMetrics.keyIndicators : 'Sport-specific performance metrics relevant to competitive success.'}
+
+Benchmarks: ${sportData.performanceMetrics ? sportData.performanceMetrics.benchmarks : 'Performance benchmarks for various competitive levels.'}
 
 ## Periodization Framework
 
@@ -284,18 +380,20 @@ Each 4-week block progressively increases in intensity while maintaining appropr
 - Nutrition: ${goalData.nutritionFocus}
 - Active recovery: Low-intensity movement targeting primary muscle groups used in ${sport}
 
-## Scientific Basis
+## 🧪 Scientific Rationale
 This program integrates evidence-based approaches from current sports science research:
 
 ${sportData.references[0]}
 ${sportData.references[1]}
+${sportData.references.length > 2 ? sportData.references[2] : ''}
+${sportData.references.length > 3 ? sportData.references[3] : ''}
 
 The training structure follows periodization principles established by Bompa & Buzzichelli (2019), with modifications based on individual response and adaptation rates.
 
 ## Implementation Guidelines
 1. Begin with an assessment of current capacities in key performance indicators
-2. Track progress using the provided metrics: ${goalData.successMetrics}
-3. Adjust based on individual response, particularly monitoring ${sportData.injuryRisks.split(',')[0].toLowerCase()} for early intervention
+2. Track progress using the provided metrics: ${sportData.performanceMetrics ? sportData.performanceMetrics.keyIndicators : goalData.successMetrics}
+3. Adjust based on individual response, particularly monitoring ${injuryRisks.split(',')[0].toLowerCase()} for early intervention
 4. Implement ${goalData.nutritionFocus.split('.')[0].toLowerCase()} to support training adaptations`;
   }
 }
