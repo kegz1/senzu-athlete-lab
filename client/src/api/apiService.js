@@ -298,9 +298,6 @@ The training structure follows periodization principles established by Bompa & B
 3. Adjust based on individual response, particularly monitoring ${sportData.injuryRisks.split(',')[0].toLowerCase()} for early intervention
 4. Implement ${goalData.nutritionFocus.split('.')[0].toLowerCase()} to support training adaptations`;
   }
-
-    return { quick, deep };
-  }
 }
 
 // Create and export a singleton instance
