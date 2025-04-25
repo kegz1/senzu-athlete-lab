@@ -1,124 +1,63 @@
 # SENZU ATHLETE LAB
 
-Advanced Sport-Specific Training System powered by Claude AI
+A comprehensive sports training platform with detailed sport-specific workout plans, scientific references, and expert database.
 
 ## Overview
 
-SENZU ATHLETE LAB is an AI-powered training system that generates personalized workout plans based on sport, experience level, goals, and available equipment. The application offers two response modes:
+SENZU ATHLETE LAB is a platform designed to provide athletes with scientifically-backed training plans tailored to specific sports. The platform includes:
 
-1. **Quick Response**: Concise, actionable training plans organized by training days
-2. **Advanced Analysis Mode**: Comprehensive, scientifically-backed training plans with detailed explanations and research citations
+1. **Detailed Sport-Specific Training Plans** - Comprehensive workout plans for various sports including Surfing, Archery, Powerlifting, Olympic Weightlifting, and Strongman
+2. **Scientific References** - Integration of research from leading sports scientists and researchers
+3. **Equipment Considerations** - Adaptable workouts with substitutions for different equipment setups
+4. **Sport Scientists Database** - Searchable database of experts, researchers, and scientists in various sports
 
 ## Features
 
-- Sport-specific training plans for various categories (Endurance, Strength, Team Sports, etc.)
-- Customizable parameters (experience level, goals, equipment, frequency)
-- Toggle between Quick Protocol Mode and Advanced Analysis Mode
-- Modern UI with responsive design
-- Powered by Claude AI for intelligent plan generation
-- Scientific Needs Analysis Matrix for comprehensive sport-specific insights
-- Advanced Training Component Integration with evidence-based methodologies
-- Scientific Periodization Framework for optimal progression
-- Performance Monitoring & Feedback Systems for continuous improvement
+### Training Plans
 
-## Deployment Guide
+- **Biomechanical Analysis** - Detailed breakdown of movement patterns, force production, and range-of-motion requirements
+- **Multi-Day Schedules** - Structured training plans with progressive overload and periodization
+- **Exercise Breakdowns** - Specific execution instructions, sets, reps, and technical cues
+- **Recovery Protocols** - Evidence-based recovery strategies and mobility work
 
-### Prerequisites
+### Sport Scientists Database
 
-- Node.js and npm installed
-- GitHub account
-- Render account
-- Anthropic API key
+- **Expert Profiles** - Information on leading researchers in various sports
+- **Key Contributions** - Notable research findings and practical applications
+- **Research Citations** - Academic sources and publications
 
-### Deploying the Server to Render
+## Repository Contents
 
-1. Create a new Web Service on Render
-2. Connect your GitHub repository
-3. Configure the service:
-   - **Name**: senzu-athlete-lab-api
-   - **Runtime**: Node
-   - **Build Command**: `cd server && npm install`
-   - **Start Command**: `cd server && node server.js`
-   - **Environment Variables**:
-     - `PORT`: 3000
-     - `NODE_ENV`: production
-     - `ANTHROPIC_API_KEY`: Your Anthropic API key
+- **HTML Templates** - Standalone HTML files demonstrating the training plans and scientist database
+- **JavaScript Modules** - Reusable components for the main application
+- **API Service** - Integration with the backend for data retrieval and storage
 
-4. Click "Create Web Service"
-5. Wait for the deployment to complete
-6. Note the URL of your deployed service (e.g., https://senzu-athlete-lab-api.onrender.com)
-
-### Updating the Client Configuration
-
-1. Update the `RENDER_URL` in `client/src/api/apiService.js` with your actual Render deployment URL
-2. Commit and push the changes to GitHub
-
-### Deploying the Client to GitHub Pages
-
-1. Install the GitHub Pages package:
-   ```
-   npm install --save-dev gh-pages
-   ```
-
-2. Add the following to your `client/package.json`:
-   ```json
-   "homepage": "https://yourusername.github.io/senzu-athlete-lab",
-   "scripts": {
-     "predeploy": "npm run build",
-     "deploy": "gh-pages -d dist"
-   }
-   ```
-
-3. Build and deploy the client:
-   ```
-   cd client
-   npm run deploy
-   ```
-
-4. Configure GitHub Pages in your repository settings:
-   - Go to Settings > Pages
-   - Set the source to the gh-pages branch
-   - Save the changes
-
-5. Your application will be available at `https://yourusername.github.io/senzu-athlete-lab`
-
-## Local Development
+## Getting Started
 
 1. Clone the repository
-2. Install dependencies:
-   ```
-   npm install
-   cd client && npm install
-   cd ../server && npm install
-   ```
+2. Open any of the HTML files in a browser to view the training plans or scientist database
+3. Explore the code to understand the structure and implementation
 
-3. Create a `.env` file in the server directory with your Anthropic API key:
-   ```
-   ANTHROPIC_API_KEY=your_api_key_here
-   ```
+## HTML Files
 
-4. Start the development server:
-   ```
-   npm run dev
-   ```
+- `test5.html` - Strongman Training Plan
+- `test6.html` - Olympic Weightlifting Analysis
+- `test7.html` - Powerlifting Exercise Breakdown
+- `test8.html` - Surfing Training Plan
+- `test9.html` - Archery Training Plan
+- `test10.html` - Surfer's 7-Day Performance Plan
+- `sportScientistsDemo.html` - Interactive Sport Scientists Database
 
-5. Open http://localhost:3000 in your browser
+## JavaScript Files
 
-## Development Methodology
+- `sportScientists.js` - Database of sport scientists and researchers
 
-### AI-Augmented Implementation
+## Future Development
 
-- **Roo Code Extension**: Accelerated component development with AI assistance
-- **Prompt Engineering**: Optimized interactions with Anthropic API for high-quality training plan generation
-- **Collaborative Debugging**: AI-assisted troubleshooting and code refinement
-- **Progressive Enhancement**: Iterative refinement through AI-human collaboration
-
-### Streamlined Deployment
-
-- **GitHub Integration**: Frictionless publication to Render with automatic deployments
-- **Environment Variable Management**: Secure API key handling for Anthropic integration
-- **Architectural Minimalism**: Simplified maintenance through clean, modular design
-- **Version Control Discipline**: Systematic approach to iterative improvement
+- Integration with user profiles for personalized training plans
+- Mobile application for on-the-go workout access
+- Expanded database of sports and scientists
+- Interactive exercise demonstrations
 
 ## License
 

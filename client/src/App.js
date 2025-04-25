@@ -82,10 +82,10 @@ class App {
     const toggleLabel = document.querySelector('.toggle-label');
     if (toggleLabel) {
       if (isAdvanced) {
-        toggleLabel.textContent = 'Advanced Analysis Mode';
+        toggleLabel.textContent = 'SENZU RESEARCH';
         toggleLabel.setAttribute('title', 'Comprehensive scientific exposition with detailed physiological mechanisms and research support');
       } else {
-        toggleLabel.textContent = 'Quick Protocol Mode';
+        toggleLabel.textContent = 'QUICK RESPONSE';
         toggleLabel.setAttribute('title', 'Distilled, actionable training prescriptions with essential coaching cues');
       }
     }

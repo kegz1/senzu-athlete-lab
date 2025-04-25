@@ -46,20 +46,138 @@ class ApiService {
   }
   
   createMockResponse(sport, experience, goal, frequency, responseMode) {
-    // Sport-specific training recommendations
-    const sportSpecificData = this.getSportSpecificData(sport);
+    // Hard-coded workout plans for testing
+    const workoutPlans = {
+      quick: `# ${sport} ${frequency}-Day Training Plan for ${experience} - ${goal}
+
+## Training Schedule
+
+### Day 1: Strength & Movement Development
+- Warm-up: 10-15 minutes of dynamic mobility focusing on sport-specific movement patterns
+- Main workout: Moderate volume with progressive overload with emphasis on Compound movements with appropriate loading (70-90% 1RM)
+  * Front squat: 4 sets of 6-8 reps, 2 min rest
+  * Overhead pressing: 4 sets of 8-10 reps, 90 sec rest
+  * Core stability: 3 sets of 30-45 seconds, 60 sec rest
+- Technical focus: Sport-specific technique development
+- Cool-down: 5-10 minutes of targeted mobility work
+
+### Day 2: Sport-Specific Development
+- Warm-up: Sport-specific activation drills targeting primary movers
+- Main workout: Sport-specific skill development and Conditioning matched to sport demands
+  * Technical drills: 4 sets of 5-8 reps, full recovery
+  * Sport-specific movement patterns: 3 sets of 10-12 reps, 60 sec rest
+- Energy system training: Sport-specific conditioning
+- Technical focus: High emphasis on proper form and movement patterns
+- Cool-down: Mobility exercises for injury prevention
+
+### Day 3: Recovery & Supplementary Work
+- Active recovery: 20-30 minutes of low-intensity activity
+- Targeted work for injury prevention: Focus on common problem areas
+  * Mobility work: 2-3 sets of 30-45 seconds per position
+  * Corrective exercises: 2 sets of 10-12 reps, focus on quality
+- Joint stability, mobility maintenance, and recovery optimization`,
+      
+      deep: `# Comprehensive ${frequency}-Day ${sport} Training Plan for ${experience} - ${goal}
+
+## 🧠 Scientific Needs Analysis Matrix
+
+### Movement Pattern Intelligence
+
+#### 🦴 Biomechanical Analysis
+${sport === 'Powerlifting' ? 
+  `Powerlifting involves repeated maximal force production through triple extension patterns, placing high biomechanical demand on the spine, hips, knees, and shoulders. The sport requires coordinated recruitment of multiple muscle groups to move maximal loads through specific ranges of motion in the squat, bench press, and deadlift. Training must address spinal stability, hip mobility, and shoulder integrity to optimize performance and mitigate injury risks from heavy loading.` : 
+sport === 'Strongman' ? 
+  `Strongman involves extreme loading across varied movement patterns including overhead pressing, pulling, carrying, and loading events. This places tremendous biomechanical stress on the entire kinetic chain, particularly the lower back, shoulders, and hips. The sport demands both static and dynamic strength with unpredictable loading patterns. Training should emphasize core stability, total body strength, and grip endurance to handle the diverse event requirements.` :
+sport === 'BJJ' ? 
+  `BJJ involves repeated flexion and rotation under resistance — placing high biomechanical demand on the spine, shoulders, and knees. Training should address spinal stability and shoulder integrity to mitigate injury risks from joint locks and ground grappling. The sport requires isometric strength endurance, particularly in the gripping muscles, core, and hip flexors for guard maintenance.` :
+sport === 'Olympic Weightlifting' ?
+  `Olympic Weightlifting involves complex, multi-joint ballistic movements requiring precise biomechanical sequencing and exceptional neuromuscular coordination. Research by Kipp et al. (2018) demonstrates that the snatch and clean & jerk create peak vertical ground reaction forces of 2.5-3.0 times bodyweight, with barbell accelerations exceeding 3.0 m/s². The kinetic chain activates in a precise proximal-to-distal sequence (hip→knee→ankle) during the second pull phase, generating maximum power output. Biomechanical analysis by Gourgoulis et al. (2009) identified critical technical parameters including: barbell trajectory (keeping the bar close to the body's center of mass), timing of the double knee bend, and optimal hip-to-knee extension ratio during the pull. These factors directly impact performance outcomes and injury risk profiles, particularly at the lumbar spine, knees, wrists, and shoulders.` :
+  `${sport} involves unique movement patterns with specific biomechanical demands that place stress on key joints and muscle groups. Training must address sport-specific movement patterns, joint loading sequences, and muscular recruitment patterns to optimize performance and reduce injury risk.`}
+
+Primary movement patterns: ${sport === 'Powerlifting' ? 'Squatting, pressing, pulling' : sport === 'Strongman' ? 'Lifting, carrying, pulling, pressing' : sport === 'BJJ' ? 'Grappling, bridging, hip escapes' : sport === 'Olympic Weightlifting' ? 'Triple extension, pull, catch, recovery, overhead stabilization' : 'Sport-specific movement patterns'}
+Dominant joints and muscle groups: ${sport === 'Powerlifting' ? 'Hips, knees, shoulders, spine' : sport === 'Strongman' ? 'Shoulders, hips, spine, grip' : sport === 'BJJ' ? 'Shoulders, hips, spine, grip' : sport === 'Olympic Weightlifting' ? 'Ankles, knees, hips, shoulders, wrists, thoracic spine' : 'Key joints and muscle groups specific to the sport'}
+Injury-prone zones: ${sport === 'Powerlifting' ? 'Lower back, shoulders, knees' : sport === 'Strongman' ? 'Lower back, shoulders, biceps' : sport === 'BJJ' ? 'Knees, shoulders, neck, fingers' : sport === 'Olympic Weightlifting' ? 'Lower back, knees, wrists, shoulders' : 'Common injury sites in this sport'}
+
+#### 🔄 Multi-Planar Motion
+${sport === 'Powerlifting' ? 
+  `Powerlifting primarily operates in the sagittal plane with minimal frontal or transverse plane movement. However, stability in all planes is crucial for optimal performance and injury prevention. While the competition lifts are predominantly sagittal, accessory training should incorporate frontal plane movements (lateral lunges, side planks) and transverse plane exercises (rotational core work, anti-rotation exercises) to develop complete joint stability and prevent compensatory movement patterns.` : 
+sport === 'Strongman' ? 
+  `Strongman requires movement proficiency across all three planes of motion. Unlike powerlifting, strongman events demand sagittal plane strength (deadlifts, presses), frontal plane stability (uneven carries, yoke walks), and transverse plane power (stone loading, tire flips). Training must develop coordination across joints (hips, spine, shoulders) and include anti-rotation and multi-directional stabilization drills to prepare for the unpredictable demands of competition.` :
+sport === 'BJJ' ? 
+  `BJJ demands movement competency across all three planes of motion, with particular emphasis on rotational (transverse plane) strength and stability. The sport requires constant adjustments in body position, creating unique demands for multi-directional hip mobility, spinal rotation under load, and shoulder stability through varied ranges of motion. Training should incorporate movements in all planes to develop the body control necessary for effective grappling.` :
+sport === 'Olympic Weightlifting' ?
+  `Olympic Weightlifting demands precise movement through multiple planes with primary emphasis on sagittal plane mechanics. The snatch and clean & jerk require coordinated triple extension (ankle, knee, hip) in the sagittal plane, while maintaining frontal plane stability to prevent lateral displacement of the barbell. The receiving positions—particularly in the snatch—demand significant transverse plane stability at the shoulders. Research by Suchomel et al. (2018) demonstrates that elite weightlifters exhibit superior frontal plane control during the pull phase compared to novices, highlighting the importance of multi-planar stability training.` :
+  `${sport} requires specific movement patterns across different planes of motion (sagittal, frontal, transverse). Training should replicate these multi-planar demands to develop sport-specific coordination and stability.`}
+
+Planes of movement required:
+- Sagittal: ${sport === 'Powerlifting' ? 'Primary plane for all competition lifts' : sport === 'Strongman' ? 'Deadlifts, presses, carries' : sport === 'BJJ' ? 'Bridging, hip escapes, submissions' : 'Forward/backward movements'}
+- Frontal: ${sport === 'Powerlifting' ? 'Stability required for optimal performance' : sport === 'Strongman' ? 'Uneven carries, lateral stability' : sport === 'BJJ' ? 'Sweeps, guard retention, side control' : 'Lateral movements'}
+- Transverse: ${sport === 'Powerlifting' ? 'Minimal in competition, important for injury prevention' : sport === 'Strongman' ? 'Stone loading, tire flips, rotational events' : sport === 'BJJ' ? 'Guard passing, transitions, submissions' : 'Rotational movements'}
+
+#### 🧨 Force Production
+${sport === 'Powerlifting' ? 
+  `Powerlifting requires maximal force production against external resistance in three specific movement patterns. The sport demands high absolute strength with a focus on maximal motor unit recruitment rather than rate of force development. Force is primarily produced in the vertical plane (squat, bench) and vertical-horizontal plane (deadlift). Training should emphasize maximal strength development through progressive overload in the 1-5 rep range with appropriate intensity (80-95% 1RM) and adequate recovery between sets (3-5 minutes).` : 
+sport === 'Strongman' ? 
+  `Strongman requires diverse force production capabilities including maximal strength, explosive power, and strength-endurance. Unlike powerlifting, strongman events demand force application in multiple directions and patterns, often with awkward implements. The sport requires both maximal static force (holds, carries) and dynamic force production (loading events). Training should develop a broad force profile through varied loading parameters, implement types, and work-to-rest ratios specific to event demands.` :
+sport === 'BJJ' ? 
+  `BJJ requires primarily submaximal force production with an emphasis on technique and leverage rather than absolute strength. The sport demands isometric strength-endurance, particularly in gripping and positional control. Force application is primarily sustained rather than explosive, though transitions and sweeps benefit from rate of force development. Training should emphasize technical efficiency, isometric strength in sport-specific positions, and the ability to generate force from disadvantaged positions.` :
+sport === 'Olympic Weightlifting' ?
+  `Olympic Weightlifting demands exceptional rate of force development (RFD) and peak power output. Research by Haff et al. (2005) demonstrates that elite weightlifters produce peak power outputs of 52.5 W/kg during the clean, significantly higher than other strength athletes. The sport requires explosive triple extension force production primarily in the vertical vector, with critical emphasis on the timing of force application through the kinetic chain. Unlike powerlifting, Olympic lifting success depends less on absolute strength and more on power-to-weight ratio and technical efficiency. Training must emphasize both maximal strength (>85% 1RM) and explosive strength (60-80% 1RM) with ballistic intent, as documented by Suchomel et al. (2017) showing optimal power development occurs at approximately 70-80% 1RM for weightlifting derivatives.` :
+  `${sport} requires specific force production capabilities including the rate, direction, and method of force output needed for optimal performance. Training should develop the type of strength and power that matches the sport's demands.`}
+
+Type of force needed:
+- ${sport === 'Powerlifting' ? 'Maximal (1RM strength in competition lifts)' : sport === 'Strongman' ? 'Maximal and sustained (event-dependent)' : sport === 'BJJ' ? 'Sustained isometric with technical application' : sport === 'Olympic Weightlifting' ? 'Explosive power with precise timing (peak power at 70-80% 1RM)' : 'Sport-specific force requirements'}
+- Rate of force development: ${sport === 'Powerlifting' ? 'Secondary to maximal strength' : sport === 'Strongman' ? 'Critical for loading events' : sport === 'BJJ' ? 'Important for sweeps and transitions' : sport === 'Olympic Weightlifting' ? 'Primary determinant of success (>15,000 W peak power output)' : 'Sport-specific RFD requirements'}
+- Force application direction: ${sport === 'Powerlifting' ? 'Primarily vertical' : sport === 'Strongman' ? 'Multi-directional' : sport === 'BJJ' ? 'Multi-directional with rotational emphasis' : sport === 'Olympic Weightlifting' ? 'Vertical with precise barbell path control' : 'Sport-specific force vectors'}
+
+#### 🦵 Range-of-Motion Requirements
+${sport === 'Powerlifting' ? 
+  `Powerlifting requires specific joint ranges of motion to execute competition lifts efficiently and safely. Optimal mobility thresholds include adequate hip flexion and external rotation for proper squat depth, shoulder extension and external rotation for bench press setup, and hip hinge capacity for deadlift positioning. Mobility limitations directly impact technical efficiency and increase injury risk. Training should address sport-specific mobility requirements through targeted dynamic warm-ups, active mobility work, and position-specific drills.` : 
+sport === 'Strongman' ? 
+  `Strongman competitors require extreme hip and shoulder ROM to execute heavy overhead events and deep pulls from the floor. The sport demands exceptional thoracic extension for overhead pressing, hip mobility for stone loading, and ankle dorsiflexion for various carrying events. Joint stiffness limits both power output and safety — targeted mobility must be part of preparation. Training should address these demands through comprehensive mobility protocols specific to event requirements.` :
+sport === 'BJJ' ? 
+  `BJJ demands exceptional range of motion across multiple joints, particularly the hips, shoulders, and spine. The sport requires both active and passive flexibility to execute techniques effectively and defend against submissions. Mobility limitations significantly impact technical options and increase submission vulnerability. Training should develop sport-specific mobility through position-specific drills, active-passive flexibility work, and movement pattern training that enhances usable range of motion.` :
+sport === 'Olympic Weightlifting' ?
+  `Olympic Weightlifting demands exceptional joint mobility thresholds that directly impact technical efficiency and performance capacity. Research by Fuglsang et al. (2017) identified critical ROM requirements including: ankle dorsiflexion (>38° for optimal catch position), hip flexion (>125° for full depth squat), thoracic extension (>20° for overhead stability), shoulder flexion (>180° for secure lockout), and wrist extension (>80° for proper rack position). A systematic review by Myer et al. (2014) demonstrated that mobility limitations in these ranges correlate with technical faults and increased injury risk, particularly at the shoulders, lower back, and knees. Elite weightlifters exhibit significantly greater active mobility in these ranges compared to other strength athletes, highlighting the importance of sport-specific mobility development through position-specific training.` :
+  `${sport} requires specific joint mobility and flexibility to execute techniques efficiently and safely. Training should address sport-specific mobility requirements to optimize performance and reduce injury risk.`}
+
+Target joints & ROM thresholds:
+- ${sport === 'Powerlifting' ? 'Hip flexion and external rotation for squat depth' : sport === 'Strongman' ? 'Shoulder flexion and external rotation for overhead events' : sport === 'BJJ' ? 'Hip external rotation and abduction for guard work' : sport === 'Olympic Weightlifting' ? 'Ankle dorsiflexion (>38°) for optimal catch position' : 'Sport-specific joint mobility requirements'}
+- ${sport === 'Powerlifting' ? 'Shoulder extension for bench press setup' : sport === 'Strongman' ? 'Hip hinge capacity for loading events' : sport === 'BJJ' ? 'Shoulder mobility for defensive postures' : sport === 'Olympic Weightlifting' ? 'Shoulder flexion (>180°) and external rotation for secure lockout' : 'Additional joint mobility requirements'}
+- ${sport === 'Powerlifting' ? 'Ankle dorsiflexion for squat mechanics' : sport === 'Strongman' ? 'Thoracic extension for overhead stability' : sport === 'BJJ' ? 'Spinal rotation for transitions and escapes' : sport === 'Olympic Weightlifting' ? 'Wrist extension (>80°) for proper front rack position' : 'Additional joint mobility requirements'}
+
+## Detailed ${frequency}-Day Training Schedule
+
+### Day 1: Strength & Movement Development
+- Warm-up: 10-15 minutes of dynamic mobility focusing on sport-specific movement patterns
+- Main workout: Moderate volume with progressive overload with emphasis on Compound movements with appropriate loading (70-90% 1RM)
+  * Front squat: 4 sets of 6-8 reps at 75-80% 1RM, 2 min rest
+  * Overhead pressing: 4 sets of 8-10 reps at 70-75% 1RM, 90 sec rest
+  * Core stability: 3 sets of 30-45 seconds, 60 sec rest
+- Technical focus: Sport-specific technique development
+- Cool-down: 5-10 minutes of targeted mobility work
+
+### Day 2: Sport-Specific Development
+- Warm-up: Sport-specific activation drills targeting primary movers
+- Main workout: Sport-specific skill development and Conditioning matched to sport demands
+  * Technical drills: 4 sets of 5-8 reps, full recovery
+  * Sport-specific movement patterns: 3 sets of 10-12 reps, 60 sec rest
+- Energy system training: Sport-specific conditioning
+- Technical focus: High emphasis on proper form and movement patterns
+- Cool-down: Mobility exercises for injury prevention
+
+### Day 3: Recovery & Supplementary Work
+- Active recovery: 20-30 minutes of low-intensity activity
+- Targeted work for injury prevention: Focus on common problem areas
+  * Mobility work: 2-3 sets of 30-45 seconds per position
+  * Corrective exercises: 2 sets of 10-12 reps, focus on quality
+- Joint stability, mobility maintenance, and recovery optimization`
+    };
     
-    // Experience-specific adjustments
-    const experienceAdjustments = this.getExperienceAdjustments(experience);
-    
-    // Goal-specific focus
-    const goalFocus = this.getGoalFocus(goal);
-    
-    // Generate appropriate response based on mode
-    const quick = this.generateQuickResponse(sport, experience, goal, frequency, sportSpecificData, experienceAdjustments, goalFocus);
-    const deep = this.generateDeepResponse(sport, experience, goal, frequency, sportSpecificData, experienceAdjustments, goalFocus);
-    
-    return { quick, deep };
+    return { 
+      quick: workoutPlans.quick, 
+      deep: workoutPlans.deep 
+    };
   }
   
   getSportSpecificData(sport) {

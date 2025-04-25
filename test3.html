@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SENZU Test 3</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    pre {
+      background-color: #f5f5f5;
+      padding: 10px;
+      border-radius: 5px;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #000;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    .toggle-container {
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+    }
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+      margin: 0 10px;
+    }
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 34px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #000;
+    }
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+    #loading {
+      text-align: center;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>SENZU ATHLETE LAB - Test Page 3</h1>
+  
+  <div class="toggle-container">
+    <span>QUICK RESPONSE</span>
+    <label class="toggle-switch">
+      <input type="checkbox" id="mode-toggle">
+      <span class="slider"></span>
+    </label>
+    <span>SENZU RESEARCH</span>
+  </div>
+  
+  <button id="generate-btn">GENERATE SENZU PLAN</button>
+  
+  <div id="loading" style="display: none;">
+    <p>Generating workout plan...</p>
+  </div>
+  
+  <div id="result"></div>
+
+  <script>
+    // Hard-coded workout plan for testing
+    const workoutPlans = {
+      quick_response: `# Powerlifting 3-Day Training Plan for Intermediate - Strength Building
+
+## Training Schedule
+
+### Day 1: Strength & Movement Development
+- Warm-up: 10-15 minutes of dynamic mobility focusing on sport-specific movement patterns
+- Main workout: Moderate volume with progressive overload with emphasis on Compound movements with appropriate loading (70-90% 1RM)
+  * Front squat: 4 sets of 6-8 reps, 2 min rest
+  * Overhead pressing: 4 sets of 8-10 reps, 90 sec rest
+  * Core stability: 3 sets of 30-45 seconds, 60 sec rest
+- Technical focus: Sport-specific technique development
+- Cool-down: 5-10 minutes of targeted mobility work
+
+### Day 2: Sport-Specific Development
+- Warm-up: Sport-specific activation drills targeting primary movers
+- Main workout: Sport-specific skill development and Conditioning matched to sport demands
+  * Technical drills: 4 sets of 5-8 reps, full recovery
+  * Sport-specific movement patterns: 3 sets of 10-12 reps, 60 sec rest
+- Energy system training: Sport-specific conditioning
+- Technical focus: High emphasis on proper form and movement patterns
+- Cool-down: Mobility exercises for injury prevention
+
+### Day 3: Recovery & Supplementary Work
+- Active recovery: 20-30 minutes of low-intensity activity
+- Targeted work for injury prevention: Focus on common problem areas
+  * Mobility work: 2-3 sets of 30-45 seconds per position
+  * Corrective exercises: 2 sets of 10-12 reps, focus on quality
+- Joint stability, mobility maintenance, and recovery optimization`,
+      
+      deep_senzu_research: `# Comprehensive 3-Day Powerlifting Training Plan for Intermediate - Strength Building
+
+## 🧠 Scientific Needs Analysis Matrix
+
+### Movement Pattern Intelligence
+- **Biomechanical Analysis**: Sport-specific movement patterns with unique biomechanical demands.
+- **Multi-Planar Motion**: Multi-joint coordination specific to the sport's technical requirements.
+- **Force Production**: Force application varies based on the specific demands of the sport.
+- **Range-of-Motion Requirements**: Optimal joint mobility thresholds for Powerlifting include technical efficiency factors specific to the sport's performance requirements.
+
+## Detailed 3-Day Training Schedule
+
+### Day 1: Strength & Movement Development
+- Warm-up: 10-15 minutes of dynamic mobility focusing on sport-specific movement patterns
+- Main workout: Moderate volume with progressive overload with emphasis on Compound movements with appropriate loading (70-90% 1RM)
+  * Front squat: 4 sets of 6-8 reps at 75-80% 1RM, 2 min rest
+  * Overhead pressing: 4 sets of 8-10 reps at 70-75% 1RM, 90 sec rest
+  * Core stability: 3 sets of 30-45 seconds, 60 sec rest
+- Technical focus: Sport-specific technique development
+- Cool-down: 5-10 minutes of targeted mobility work
+
+### Day 2: Sport-Specific Development
+- Warm-up: Sport-specific activation drills targeting primary movers
+- Main workout: Sport-specific skill development and Conditioning matched to sport demands
+  * Technical drills: 4 sets of 5-8 reps, full recovery
+  * Sport-specific movement patterns: 3 sets of 10-12 reps, 60 sec rest
+- Energy system training: Sport-specific conditioning
+- Technical focus: High emphasis on proper form and movement patterns
+- Cool-down: Mobility exercises for injury prevention
+
+### Day 3: Recovery & Supplementary Work
+- Active recovery: 20-30 minutes of low-intensity activity
+- Targeted work for injury prevention: Focus on common problem areas
+  * Mobility work: 2-3 sets of 30-45 seconds per position
+  * Corrective exercises: 2 sets of 10-12 reps, focus on quality
+- Joint stability, mobility maintenance, and recovery optimization`
+    };
+
+    // Function to generate test workout
+    function generateTestWorkout() {
+      try {
+        // Show loading indicator
+        document.getElementById('loading').style.display = 'block';
+        
+        // Get the response mode from the toggle
+        const isAdvanced = document.getElementById('mode-toggle').checked;
+        const responseMode = isAdvanced ? 'deep_senzu_research' : 'quick_response';
+        
+        // Simulate a delay
+        setTimeout(() => {
+          // Display the result
+          const resultDiv = document.getElementById('result');
+          resultDiv.innerHTML = `<h2>Generated Workout Plan</h2>
+                                <pre>${workoutPlans[responseMode]}</pre>`;
+                                
+          // Hide loading indicator
+          document.getElementById('loading').style.display = 'none';
+        }, 1500);
+      } catch (error) {
+        console.error('Error generating workout:', error);
+        document.getElementById('result').innerHTML = `<p>Error: ${error.message}</p>`;
+        document.getElementById('loading').style.display = 'none';
+      }
+    }
+
+    // Add event listener to button
+    document.getElementById('generate-btn').addEventListener('click', generateTestWorkout);
+    
+    // Add event listener to toggle
+    document.getElementById('mode-toggle').addEventListener('change', function() {
+      // If there's already a result, regenerate it with the new mode
+      if (document.getElementById('result').innerHTML !== '') {
+        generateTestWorkout();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -11,10 +11,10 @@ class Toggle {
     const toggleSwitch = document.createElement('div');
     toggleSwitch.className = 'toggle-switch';
     
-    // Create left label (Quick Protocol Mode)
+    // Create left label (QUICK RESPONSE)
     const quickLabel = document.createElement('span');
     quickLabel.className = 'toggle-label';
-    quickLabel.textContent = 'Quick Protocol Mode';
+    quickLabel.textContent = 'QUICK RESPONSE';
     quickLabel.setAttribute('title', 'Distilled, actionable training prescriptions with essential coaching cues');
     
     // Create toggle switch container
@@ -31,10 +31,10 @@ class Toggle {
     const toggleSlider = document.createElement('label');
     toggleSlider.setAttribute('for', 'mode-toggle');
     
-    // Create right label (Advanced Analysis Mode)
+    // Create right label (SENZU RESEARCH)
     const advancedLabel = document.createElement('span');
     advancedLabel.className = 'toggle-label';
-    advancedLabel.textContent = 'Advanced Analysis Mode';
+    advancedLabel.textContent = 'SENZU RESEARCH';
     advancedLabel.setAttribute('title', 'Comprehensive scientific exposition with detailed physiological mechanisms and research support');
     
     // Add event listener
