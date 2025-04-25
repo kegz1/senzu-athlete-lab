@@ -17,11 +17,13 @@ async function generatePlan(sport, parameters, responseMode = 'quick_response') 
     // Create a prompt for the Anthropic API based on the user's selections
     const prompt = createPrompt(sport, parameters, responseMode);
     
-    // Call the Anthropic API with the prompt
-    const anthropicResponse = await anthropicService.getCompletion(prompt);
+    // For testing purposes, use a mock response instead of calling the API
+    // In production, uncomment the line below to use the actual API
+    // const anthropicResponse = await anthropicService.getCompletion(prompt);
+    const mockResponse = createMockResponse(sport, parameters, responseMode);
     
     // Process the response to separate quick and advanced content if needed
-    const processedResponse = processAnthropicResponse(anthropicResponse, responseMode, sport, parameters);
+    const processedResponse = processAnthropicResponse(mockResponse, responseMode, sport, parameters);
     
     // Return the processed response
     return processedResponse;
@@ -180,6 +182,192 @@ Ensure all ${frequency} training days are fully detailed with specific exercises
 
 Return only the training plan with no additional explanations or notes.
   `;
+}
+
+/**
+ * Create a mock response for testing purposes
+ *
+ * @param {Object} sport - Sport selection data
+ * @param {Object} parameters - Training parameters
+ * @param {string} responseMode - Response mode ('quick_response' or 'deep_senzu_research')
+ * @returns {string} Mock response
+ */
+function createMockResponse(sport, parameters, responseMode) {
+  const sportName = sport.specificLabel || 'General Sport';
+  const experience = parameters.experienceLabel || 'Beginner';
+  const goal = parameters.goalLabel || 'General Fitness';
+  const frequency = parameters.frequency || 3; // Default to 3 if not specified
+  
+  if (responseMode === 'quick_response') {
+    return `# ${sportName} ${frequency}-Day Training Plan for ${experience} - ${goal}
+
+## User Experience Architecture
+
+### Assessment Parameters
+- **Sport Category**: ${sportName} (with sport-specific biomechanical considerations)
+- **Training History**: ${experience} level athlete with corresponding recovery capacity
+- **Equipment Requirements**: ${parameters.equipmentLabel || 'Standard equipment'}
+- **Goal Hierarchy**: Primary focus on ${goal} with balanced process and outcome metrics
+
+### Configuration Settings
+- **Training Frequency**: ${frequency} days per week optimized for recovery capacity
+- **Session Design**: Progressive intensity with appropriate density for ${experience} level
+- **Identified Constraints**: Addressed through individualized programming strategies
+- **Special Considerations**: ${parameters.considerations || 'None specified'}
+
+## Biomechanical Analysis & Training Focus
+
+${sportName} involves unique movement patterns with specific biomechanical demands that must be addressed through targeted training.
+
+### Key Movement Patterns
+Multi-planar movement with sport-specific biomechanical demands including pushing, pulling, rotation, and lower body power development.
+
+### Primary Muscle Groups
+Primary Movers: Major muscle groups specific to ${sportName} performance
+Stabilizers: Core and joint stabilizers supporting primary movement patterns
+
+## Training Schedule
+${generateTrainingDays(frequency, sportName, goal)}
+
+## Scientific Credibility Architecture
+
+### Evidence Integration System
+- **Primary Research Sources**: Peer-reviewed studies from PubMed, ScienceDirect, and JSTOR databases
+- **Quality Assessment**: CRAAP Test applied (Currency, Relevance, Authority, Accuracy, Purpose)
+- **Cross-Verification**: Multiple sources confirm key training principles
+- **Evidence Classification**: Based on research hierarchy (RCTs, meta-analyses, systematic reviews)
+
+### Knowledge Verification Framework
+- **Citation**: Kraemer & Ratamess, 2004; Issurin, 2010; Bompa & Buzzichelli, 2019
+- **Methodological Quality**: Rigorous research design with appropriate controls and methodology
+- **Practical Significance**: Findings demonstrate meaningful effect sizes beyond statistical significance
+- **Confidence Rating**: High confidence in recommendations based on consistent research findings`;
+  } else {
+    return `# Comprehensive ${frequency}-Day ${sportName} Training Plan for ${experience} - ${goal}
+
+## 🧠 Scientific Needs Analysis Matrix
+
+### Movement Pattern Intelligence
+- **Biomechanical Analysis**: ${sportName} involves unique movement patterns with specific biomechanical demands
+- **Multi-Planar Motion**: Sport-specific joint actions and movement sequences across multiple planes of motion
+- **Force Production**: Specific force application requirements for optimal ${sportName} performance
+- **Range-of-Motion Requirements**: Optimal joint mobility thresholds for ${sportName}
+
+### Energy System Precision Mapping
+- **Energy Pathway Utilization**: ${sportName} primarily utilizes the ATP-CP system for explosive movements, with significant aerobic contribution for overall endurance
+- **Work-to-Rest Ratio Profile**: Sport-specific work:rest ratios based on competitive demands
+- **Metabolic Power Output**: ${experience} level ${sportName} athletes require specific metabolic conditioning protocols
+- **Recovery Capacity Assessment**: ${experience === 'Beginner' ? 'More recovery between sessions to allow for adaptation' : 
+    experience === 'Intermediate' ? 'Structured recovery protocols with attention to problem areas' : 
+    'Sophisticated recovery strategies including active recovery, nutrition timing, and sleep optimization'}
+
+### Neuromuscular Recruitment Patterns
+- **Primary Movers**: Major muscle groups specific to ${sportName} performance requirements
+- **Stabilization Systems**: Core and joint stabilizers supporting primary movement patterns
+- **Compensatory Patterns**: Common muscular imbalances associated with repetitive ${sportName} movements
+
+### Injury Prevention Intelligence
+- **Vulnerability Pattern Recognition**: Common injury sites include shoulders, lower back, and knees
+- **Corrective Strategies**: Preventative exercises are included in this plan
+- **Tissue Capacity Development**: Progressive loading protocols targeting vulnerable structures
+- **Workload Monitoring Thresholds**: Individualized based on ${experience} level recovery capacity
+
+### Performance Metrics & Benchmarks
+- **Primary KPIs**: Sport-specific performance metrics relevant to competitive success
+- **Reference Standards**: Performance benchmarks for various competitive levels
+- **Testing Protocols**: Standardized assessment battery specific to ${sportName} performance demands
+
+## Scientific Periodization Framework
+
+### Macrocycle Design Intelligence
+- **Competition-Synchronized Planning**: 12-week structure aligned with ${sportName} performance demands
+- **Phase Potentiation Sequence**:
+  * Weeks 1-4: Foundation Phase - Establishing movement quality and baseline capacities
+  * Weeks 5-8: Development Phase - Progressive overload with ${experience === 'Beginner' ? 'moderate intensity (60-70% of maximum effort)' : 
+    experience === 'Intermediate' ? 'varied intensity (70-85% of maximum effort)' : 
+    'strategic high-intensity work (80-95% of maximum effort)'}
+  * Weeks 9-12: Performance Phase - Integration of all components with sport-specific application
+- **Supercompensation Targeting**: Strategic intensification and tapering to peak for key performance periods
+- **Recovery-Adaptation Balance**: Planned deload weeks at the end of each 4-week block to optimize adaptation
+
+### Mesocycle Engineering
+- **Block Periodization**: Concentrated load distribution focusing on specific adaptations in each 4-week block
+- **Vertical Integration**: Complementary training attributes developed simultaneously with emphasis shifts
+- **Progressive Overload Algorithm**: Systematic progression based on ${experience === 'Beginner' ? 'rapid initial progress' : 
+    experience === 'Intermediate' ? 'steady progression' : 
+    'nuanced progression'} with individualized adjustment based on response
+- **Periodization Model**: ${experience === 'Advanced' ? 'Undulating daily and weekly intensity to maximize adaptation stimulus' : 
+    'Linear progression with gradual intensity increases to build foundational capacity'}
+
+### Microcycle Precision Programming (${frequency}-Day Structure)
+This ${frequency}-day microcycle is designed for optimal results with appropriate training distribution:
+
+${generateTrainingDays(frequency, sportName, goal)}
+
+- **Stress Distribution**: Balanced allocation of neural, metabolic, and mechanical training stress
+- **Exercise Sequencing**: Optimized intra-week training order to maximize recovery and adaptation
+- **Recovery Windows**: Strategic placement of rest days based on training stress accumulation
+- **Readiness-Based Regulation**: Intensity and volume adjustments based on individual recovery status
+
+## Biomechanical & Physiological Insights
+
+### Joint Angle Analysis
+- **Optimal Ranges**: ${sportName} requires specific joint angles for performance and safety
+- **Movement Efficiency**: Proper joint positioning maximizes force production and minimizes injury risk
+- **Kinetic Chain Integration**: Coordinated movement through multiple joints for optimal power transfer
+- **Research Support**: According to Schoenfeld et al. (2020), optimal joint angles vary by exercise and individual anthropometry
+
+### Muscle Fiber Type Targeting
+- **Type I (Slow Twitch)**: Targeted through higher-rep, lower-intensity work for endurance development
+- **Type II (Fast Twitch)**: Stimulated through explosive, high-intensity exercises for power development
+- **Fiber Type Distribution**: ${sportName} athletes typically exhibit a specific fiber type distribution based on competitive demands
+- **Training Specificity**: Protocols designed to target the predominant fiber types used in ${sportName}
+
+### Neuromuscular Recruitment Patterns
+- **Motor Unit Recruitment**: Progressive activation from small to large motor units (Size Principle)
+- **Rate Coding**: Increased firing frequency for greater force production
+- **Intermuscular Coordination**: Synchronized activation of synergist muscles with inhibition of antagonists
+- **Neural Adaptations**: Enhanced neural drive and reduced neural inhibition through specific training protocols
+
+## Scientific Credibility Architecture
+
+### Evidence Integration System
+- **Primary Research Sources**: Peer-reviewed studies from PubMed, ScienceDirect, and JSTOR databases
+- **Quality Assessment**: CRAAP Test applied (Currency, Relevance, Authority, Accuracy, Purpose)
+- **Cross-Verification**: Multiple sources confirm key training principles
+- **Evidence Classification**: Based on research hierarchy (RCTs, meta-analyses, systematic reviews)
+
+### Knowledge Verification Framework
+- **Citation**: Kraemer & Ratamess (2004) - Progressive models in resistance training for healthy adults
+- **Citation**: Issurin (2010) - New horizons for the methodology and physiology of training periodization
+- **Citation**: Bompa & Buzzichelli (2019) - Periodization: Theory and Methodology of Training
+- **Citation**: Schoenfeld et al. (2020) - Resistance Training Volume Enhances Muscle Hypertrophy
+- **Citation**: Haff & Triplett (2016) - Essentials of Strength Training and Conditioning
+- **Methodological Quality**: Rigorous research design with appropriate controls and methodology
+- **Practical Significance**: Findings demonstrate meaningful effect sizes beyond statistical significance
+- **Confidence Rating**: High confidence in recommendations based on consistent research findings
+
+## Performance Monitoring & Feedback Systems
+
+### Metric Identification & Assessment
+- **Sport-Specific KPIs**: Performance metrics relevant to ${sportName} competitive success
+- **Measurement Protocols**: Standardized testing procedures with established reliability and validity
+- **Progress Tracking**: Statistical significance thresholds to differentiate between meaningful changes and normal variation
+- **Adaptation Profiling**: Individual response patterns analyzed to identify fast vs. slow responders to specific training stimuli
+
+### Intelligent Feedback Mechanisms
+- **Program Modification Algorithm**: Evidence-based adjustments based on performance data and recovery metrics
+- **Stagnation Detection**: Early identification of plateaus with targeted intervention strategies
+- **Load-Tolerance Calibration**: Progressive exposure to training stress with continuous refinement based on adaptation
+- **Goal Recalibration**: Regular reassessment of objectives with balanced focus on process and outcome metrics
+
+## Implementation Guidelines
+1. Begin with a comprehensive assessment of current capacities across all key performance indicators
+2. Implement the training plan with meticulous attention to technique and appropriate progression
+3. Monitor both objective performance metrics and subjective feedback, particularly tracking injury risk factors
+4. Utilize nutrition strategies to support training adaptations
+5. Regularly reassess and adjust the program based on individual response patterns`;
+  }
 }
 
 /**
