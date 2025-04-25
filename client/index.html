@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SENZU ATHLETE LAB</title>
+  <meta name="description" content="Advanced sport-specific training system powered by Claude AI">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./src/styles/styles.css">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>SENZU ATHLETE LAB</h1>
+      <p class="tagline">Advanced Sport-Specific Training System</p>
+    </header>
+    
+    <main>
+      <section id="input-section">
+        <div class="sport-selection-container">
+          <h2>Select Sport</h2>
+          <div id="sport-selection"></div>
+        </div>
+        
+        <div class="parameters-container">
+          <h2>Training Parameters</h2>
+          <div id="parameters"></div>
+        </div>
+        
+        <div class="toggle-container">
+          <h2>Response Type</h2>
+          <div id="toggle"></div>
+        </div>
+        
+        <div class="generate-container">
+          <button id="generate-btn" class="generate-btn">Create Senzu Training Plan</button>
+        </div>
+      </section>
+      
+      <section id="results-section" class="hidden">
+        
+        <div class="results-container">
+          <h2>Training Plan</h2>
+          <div id="results-content"></div>
+        </div>
+        
+        <div class="actions-container">
+          <button id="copy-btn" class="action-btn">Copy to Clipboard</button>
+          <button id="back-btn" class="action-btn">Back to Form</button>
+        </div>
+      </section>
+      
+      <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <p>Deep Senzu Thinking...</p>
+      </div>
+    </main>
+    
+    <footer>
+      <p>SENZU ATHLETE LAB - Powered by Claude AI - &copy; 2025</p>
+    </footer>
+  </div>
+  
+  <script type="module" src="./src/index.js"></script>
+</body>
+</html>

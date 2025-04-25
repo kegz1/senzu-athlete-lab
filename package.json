@@ -1,0 +1,27 @@
+{
+  "name": "senzu-athlete-lab",
+  "version": "1.0.0",
+  "description": "Advanced sport-specific training system powered by Claude AI",
+  "main": "index.js",
+  "scripts": {
+    "install-all": "npm install && cd client && npm install && cd ../server && npm install",
+    "client": "cd client && npm run dev",
+    "server": "cd server && npm run dev",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "cd client && npm run build",
+    "start": "cd server && npm start",
+    "deploy:client": "cd client && npm run deploy",
+    "deploy:server": "echo 'Deploy the server to Render following the instructions in README.md'"
+  },
+  "keywords": [
+    "sports",
+    "training",
+    "fitness",
+    "AI"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

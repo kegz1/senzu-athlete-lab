@@ -1,0 +1,40 @@
+## Project Structure
+
+```
+SportVibeGPT-Elite/
+│
+├── client/                        # Frontend code
+│   ├── index.html                 # Entry HTML file
+│   ├── package.json               # Frontend dependencies
+│   ├── README.md                  # Frontend documentation
+│   └── src/
+│       ├── index.js               # JavaScript entry point
+│       ├── App.js                 # Main application component
+│       ├── styles/
+│       │   └── styles.css         # Main CSS styles
+│       ├── components/
+│       │   ├── SportSelection.js  # Sport selection component
+│       │   ├── Parameters.js      # Training parameters component
+│       │   ├── Results.js         # Results display component
+│       │   └── Toggle.js          # Response mode toggle component
+│       ├── utils/
+│       │   └── formatters.js      # Formatting utilities
+│       └── api/
+│           └── apiService.js      # API service for backend calls
+│
+├── server/                        # Backend code
+│   ├── server.js                  # Express server entry point
+│   ├── package.json               # Backend dependencies
+│   ├── README.md                  # Backend documentation
+│   ├── .env                       # Environment variables (create this)
+│   ├── routes/
+│   │   └── api.js                 # API routes
+│   ├── controllers/
+│   │   └── trainingController.js  # Controller for training logic
+│   └── utils/
+│       └── anthropicService.js    # Anthropic API integration
+│
+└── package.json                   # Root package.json for scripts
+```
+
+This structure follows a clean separation of concerns with a client directory for the frontend and a server directory for the backend, making it easy to deploy to Render.
