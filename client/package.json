@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Frontend for SENZU ATHLETE LAB",
   "private": true,
-  "homepage": "https://yourusername.github.io/senzu-athlete-lab",
+  "homepage": "https://kegz1.github.io/senzu-athlete-lab",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
