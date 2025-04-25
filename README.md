@@ -1,6 +1,6 @@
 # SENZU ATHLETE LAB
 
-A comprehensive sports training platform with detailed sport-specific workout plans, scientific references, and expert database.
+A comprehensive sports training platform with detailed sport-specific workout plans and scientific references.
 
 ## Overview
 
@@ -9,7 +9,6 @@ SENZU ATHLETE LAB is a platform designed to provide athletes with scientifically
 1. **Detailed Sport-Specific Training Plans** - Comprehensive workout plans for various sports including Surfing, Archery, Powerlifting, Olympic Weightlifting, and Strongman
 2. **Scientific References** - Integration of research from leading sports scientists and researchers
 3. **Equipment Considerations** - Adaptable workouts with substitutions for different equipment setups
-4. **Sport Scientists Database** - Searchable database of experts, researchers, and scientists in various sports
 
 ## Features
 
@@ -20,11 +19,7 @@ SENZU ATHLETE LAB is a platform designed to provide athletes with scientifically
 - **Exercise Breakdowns** - Specific execution instructions, sets, reps, and technical cues
 - **Recovery Protocols** - Evidence-based recovery strategies and mobility work
 
-### Sport Scientists Database
 
-- **Expert Profiles** - Information on leading researchers in various sports
-- **Key Contributions** - Notable research findings and practical applications
-- **Research Citations** - Academic sources and publications
 
 ## Repository Contents
 
@@ -46,11 +41,8 @@ SENZU ATHLETE LAB is a platform designed to provide athletes with scientifically
 - `test8.html` - Surfing Training Plan
 - `test9.html` - Archery Training Plan
 - `test10.html` - Surfer's 7-Day Performance Plan
-- `sportScientistsDemo.html` - Interactive Sport Scientists Database
 
-## JavaScript Files
 
-- `sportScientists.js` - Database of sport scientists and researchers
 
 ## Future Development
 
