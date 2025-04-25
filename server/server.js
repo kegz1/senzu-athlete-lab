@@ -21,15 +21,30 @@ app.use(morgan('dev')); // Logging for development
 // API routes
 app.use('/api', apiRoutes);
 
-// Serve static files from the React frontend app in production
+// Serve static files from the frontend app in production
 if (process.env.NODE_ENV === 'production') {
-  // Serve any static files
-  app.use(express.static(path.join(__dirname, '../client/dist')));
+  const clientDistPath = path.join(__dirname, '../client/dist');
+  
+  // Check if the client/dist directory exists
+  const fs = require('fs');
+  if (fs.existsSync(clientDistPath)) {
+    console.log('Serving static files from:', clientDistPath);
+    
+    // Serve any static files
+    app.use(express.static(clientDistPath));
 
-  // Handle React routing, return all requests to React app
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
-  });
+    // Handle frontend routing, return all requests to the frontend app
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(clientDistPath, 'index.html'));
+    });
+  } else {
+    console.log('Warning: client/dist directory not found. Static files will not be served.');
+    
+    // Provide a simple response for the root route
+    app.get('/', (req, res) => {
+      res.send('SENZU ATHLETE LAB API is running. Frontend not found.');
+    });
+  }
 }
 
 // Error handling middleware
