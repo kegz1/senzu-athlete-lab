@@ -8,13 +8,32 @@ class ApiService {
       const sportName = data.sport.sport.name;
       const experience = data.parameters.experienceLabel;
       const goal = data.parameters.goalLabel;
+      const frequency = parseInt(data.parameters.frequency) || 3; // Default to 3 if not specified
       const responseMode = data.responseMode;
       
-      // Generate a mock response based on the data
-      const mockResponse = this.createMockResponse(sportName, experience, goal, responseMode);
+      console.log(`Generating ${frequency}-day training plan for ${sportName}, ${experience} level, ${goal}`);
       
-      // Simulate network delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Show loading message to indicate processing
+      document.getElementById('loading').querySelector('p').textContent =
+        `Analyzing ${sportName} biomechanics and creating ${frequency}-day training plan...`;
+      
+      // Generate a mock response based on the data
+      const mockResponse = this.createMockResponse(sportName, experience, goal, frequency, responseMode);
+      
+      // Simulate network delay - longer for more complex plans
+      const baseDelay = 2000; // Base delay of 2 seconds
+      const additionalDelay = frequency * 500; // Additional 500ms per training day
+      const totalDelay = baseDelay + additionalDelay;
+      
+      console.log(`Processing plan, will take approximately ${totalDelay/1000} seconds`);
+      
+      // Update loading message during "processing"
+      setTimeout(() => {
+        document.getElementById('loading').querySelector('p').textContent =
+          `Optimizing training protocols for ${experience} level ${goal.toLowerCase()}...`;
+      }, baseDelay / 2);
+      
+      await new Promise(resolve => setTimeout(resolve, totalDelay));
       
       return {
         quick_response: responseMode === 'quick_response' ? mockResponse.quick : mockResponse.quick,
@@ -26,7 +45,7 @@ class ApiService {
     }
   }
   
-  createMockResponse(sport, experience, goal, responseMode) {
+  createMockResponse(sport, experience, goal, frequency, responseMode) {
     // Sport-specific training recommendations
     const sportSpecificData = this.getSportSpecificData(sport);
     
@@ -37,8 +56,8 @@ class ApiService {
     const goalFocus = this.getGoalFocus(goal);
     
     // Generate appropriate response based on mode
-    const quick = this.generateQuickResponse(sport, experience, goal, sportSpecificData, experienceAdjustments, goalFocus);
-    const deep = this.generateDeepResponse(sport, experience, goal, sportSpecificData, experienceAdjustments, goalFocus);
+    const quick = this.generateQuickResponse(sport, experience, goal, frequency, sportSpecificData, experienceAdjustments, goalFocus);
+    const deep = this.generateDeepResponse(sport, experience, goal, frequency, sportSpecificData, experienceAdjustments, goalFocus);
     
     return { quick, deep };
   }
@@ -240,7 +259,7 @@ class ApiService {
     return goalData[goal] || goalData['default'];
   }
   
-  generateQuickResponse(sport, experience, goal, sportData, experienceData, goalData) {
+  generateQuickResponse(sport, experience, goal, frequency, sportData, experienceData, goalData) {
     // Extract injury risks from the object if it exists in that format
     const injuryRisks = sportData.injuryRisks.common ?
       sportData.injuryRisks.common.split(',')[0].toLowerCase() :
@@ -251,7 +270,8 @@ class ApiService {
       sportData.energySystems.primary :
       sportData.energySystems;
     
-    return `# ${sport} Training Plan for ${experience} - ${goal}
+    // Generate the introduction section
+    let response = `# ${sport} ${frequency}-Day Training Plan for ${experience} - ${goal}
 
 ## Biomechanical Analysis & Training Focus
 
@@ -265,27 +285,14 @@ ${sportData.muscleRecruitment ? `Primary Movers: ${sportData.muscleRecruitment.p
 Stabilizers: ${sportData.muscleRecruitment.stabilizers}` : 'Sport-specific muscle recruitment patterns.'}
 
 ## Training Schedule
+`;
 
-### Day 1: Strength & Movement Development
-- Warm-up: 10-15 minutes of dynamic mobility focusing on ${sportData.biomechanics ? sportData.biomechanics.keyJointActions.split(',')[0].toLowerCase() : 'sport-specific movement patterns'}
-- Main workout: ${experienceData.volumeModifier} with emphasis on ${goalData.trainingEmphasis}
-  * ${sportData.strengthFocus[0]}
-  * ${sportData.strengthFocus[1]}
-- Technical focus: ${sportData.biomechanics ? sportData.biomechanics.techniqueFactors.split(',')[0] : 'Sport-specific technique development'}
-- Cool-down: 5-10 minutes of targeted mobility work
+    // Generate training days based on frequency
+    const trainingDays = this.generateTrainingDays(frequency, sport, sportData, experienceData, goalData, injuryRisks);
+    response += trainingDays;
 
-### Day 2: Sport-Specific Development
-- Warm-up: Sport-specific activation drills targeting ${sportData.muscleRecruitment ? sportData.muscleRecruitment.primaryMovers.split(',')[0] : 'primary movers'}
-- Main workout: ${sportData.keyExercises[0]} and ${sportData.keyExercises[1]}
-- Energy system training: ${sportData.energySystems.workRestRatios ? sportData.energySystems.workRestRatios.split(';')[0] : 'Sport-specific conditioning'}
-- Technical focus: ${experienceData.techniqueEmphasis}
-- Cool-down: Mobility exercises for ${injuryRisks} prevention
-
-### Day 3: Recovery & Supplementary Work
-- Active recovery: 20-30 minutes of low-intensity activity
-- Targeted work for injury prevention: Focus on ${injuryRisks} ${sportData.injuryRisks.prevention ? `using ${sportData.injuryRisks.prevention.split(',')[0]}` : ''}
-- ${goalData.supplementaryWork}
-
+    // Add the rest of the content
+    response += `
 ## Progression Plan
 ${experienceData.progressionRate}. Track ${sportData.performanceMetrics ? sportData.performanceMetrics.keyIndicators.split(',')[0].toLowerCase() : goalData.successMetrics.split(',')[0].toLowerCase()} as your primary metric.
 
@@ -295,9 +302,165 @@ ${goalData.nutritionFocus}
 ## Scientific Basis
 This program is based on research from:
 ${sportData.references[0]}`;
+
+    return response;
   }
   
-  generateDeepResponse(sport, experience, goal, sportData, experienceData, goalData) {
+  // Helper method to generate training days based on frequency
+  generateTrainingDays(frequency, sport, sportData, experienceData, goalData, injuryRisks) {
+    let trainingDays = '';
+    
+    // Define different training day templates
+    const dayTemplates = [
+      {
+        title: "Strength & Movement Development",
+        content: `- Warm-up: 10-15 minutes of dynamic mobility focusing on ${sportData.biomechanics ? sportData.biomechanics.keyJointActions.split(',')[0].toLowerCase() : 'sport-specific movement patterns'}
+- Main workout: ${experienceData.volumeModifier} with emphasis on ${goalData.trainingEmphasis}
+  * ${sportData.strengthFocus[0]}
+  * ${sportData.strengthFocus[1]}
+- Technical focus: ${sportData.biomechanics ? sportData.biomechanics.techniqueFactors.split(',')[0] : 'Sport-specific technique development'}
+- Cool-down: 5-10 minutes of targeted mobility work`
+      },
+      {
+        title: "Sport-Specific Development",
+        content: `- Warm-up: Sport-specific activation drills targeting ${sportData.muscleRecruitment ? sportData.muscleRecruitment.primaryMovers.split(',')[0] : 'primary movers'}
+- Main workout: ${sportData.keyExercises[0]} and ${sportData.keyExercises[1]}
+- Energy system training: ${sportData.energySystems.workRestRatios ? sportData.energySystems.workRestRatios.split(';')[0] : 'Sport-specific conditioning'}
+- Technical focus: ${experienceData.techniqueEmphasis}
+- Cool-down: Mobility exercises for ${injuryRisks} prevention`
+      },
+      {
+        title: "Recovery & Supplementary Work",
+        content: `- Active recovery: 20-30 minutes of low-intensity activity
+- Targeted work for injury prevention: Focus on ${injuryRisks} ${sportData.injuryRisks.prevention ? `using ${sportData.injuryRisks.prevention.split(',')[0]}` : ''}
+- ${goalData.supplementaryWork}`
+      },
+      {
+        title: "Power & Explosiveness",
+        content: `- Warm-up: Dynamic movement preparation with emphasis on neural activation
+- Main workout: Plyometric and explosive training specific to ${sport}
+  * Reactive strength development
+  * Sport-specific power exercises
+- Technical focus: Speed of movement and force application
+- Cool-down: Mobility and light stretching`
+      },
+      {
+        title: "Endurance & Conditioning",
+        content: `- Warm-up: Progressive intensity build-up (5-10 minutes)
+- Main workout: ${sport}-specific conditioning
+  * Interval training matched to sport demands
+  * Work-rest ratios based on ${sport} requirements
+- Technical focus: Maintaining form under fatigue
+- Cool-down: Gradual reduction in intensity and heart rate recovery monitoring`
+      },
+      {
+        title: "Technical Skills & Coordination",
+        content: `- Warm-up: Neuromuscular activation drills
+- Main workout: Skill development session
+  * Technical drills progressing from simple to complex
+  * Coordination challenges specific to ${sport}
+- Focus: Precision of movement and skill acquisition
+- Cool-down: Light activity and skill reflection`
+      },
+      {
+        title: "Active Recovery",
+        content: `- Low-intensity activity (30-45 minutes)
+- Mobility work targeting areas of restriction
+- Self-myofascial release techniques
+- Mindfulness and visualization practice
+- Focus on quality sleep and nutrition`
+      }
+    ];
+    
+    // Generate appropriate number of training days
+    for (let i = 1; i <= frequency; i++) {
+      // Select template based on day number and frequency
+      let templateIndex;
+      
+      if (frequency <= 3) {
+        // For low frequency, use the first 3 templates in order
+        templateIndex = (i - 1) % 3;
+      } else if (frequency <= 5) {
+        // For medium frequency, distribute key training types
+        if (i === 1) templateIndex = 0; // Strength
+        else if (i === 2) templateIndex = 1; // Sport-specific
+        else if (i === frequency) templateIndex = 2; // Recovery
+        else templateIndex = 3 + ((i - 3) % 2); // Power or Endurance
+      } else {
+        // For high frequency (6-7 days), use all templates
+        templateIndex = (i - 1) % dayTemplates.length;
+      }
+      
+      const template = dayTemplates[templateIndex];
+      
+      trainingDays += `
+### Day ${i}: ${template.title}
+${template.content}
+`;
+    }
+    
+    return trainingDays;
+  }
+  
+  // Helper method to generate microcycle description based on frequency
+  generateMicrocycleDescription(frequency, sport, goalData, sportData, experienceData) {
+    let description = '';
+    
+    if (frequency <= 3) {
+      // For low frequency (1-3 days)
+      description += `This ${frequency}-day microcycle is designed for optimal results with limited training time:\n\n`;
+      
+      if (frequency >= 1) {
+        description += `- Day 1: Strength Focus - ${goalData.primaryFocus} (Primary training day)\n`;
+      }
+      
+      if (frequency >= 2) {
+        description += `- Day 2: Sport-Specific Development - ${sportData.keyExercises[0]} and ${sportData.keyExercises[1]}\n`;
+      }
+      
+      if (frequency >= 3) {
+        description += `- Day 3: Recovery & Supplementary Work - ${experienceData.recoveryNeeds}\n`;
+      }
+      
+      description += `\nRest days should include light activity and mobility work to maintain movement quality.`;
+    }
+    else if (frequency <= 5) {
+      // For medium frequency (4-5 days)
+      description += `This ${frequency}-day microcycle balances training stimulus with adequate recovery:\n\n`;
+      
+      description += `- Day 1: Strength Focus - ${goalData.primaryFocus}\n`;
+      description += `- Day 2: Sport-Specific Development - ${sportData.keyExercises[0]} and ${sportData.keyExercises[1]}\n`;
+      description += `- Day 3: Recovery & Mobility - Active recovery protocols\n`;
+      description += `- Day 4: Power Development - Sport-specific power application and reactive training\n`;
+      
+      if (frequency >= 5) {
+        description += `- Day 5: Conditioning - Energy system development matched to ${sport} demands\n`;
+      }
+      
+      description += `\nRemaining days focus on complete rest or very light activity to ensure full recovery.`;
+    }
+    else {
+      // For high frequency (6-7 days)
+      description += `This high-frequency ${frequency}-day microcycle is designed for advanced athletes with optimized recovery capabilities:\n\n`;
+      
+      description += `- Day 1: Strength Focus - ${goalData.primaryFocus}\n`;
+      description += `- Day 2: Sport-Specific Development - ${sportData.keyExercises[0]}\n`;
+      description += `- Day 3: Recovery & Mobility - ${experienceData.recoveryNeeds}\n`;
+      description += `- Day 4: Power Development - Sport-specific power application\n`;
+      description += `- Day 5: Technical Skills - Precision and skill acquisition\n`;
+      description += `- Day 6: Conditioning - Energy system development matched to ${sport} demands\n`;
+      
+      if (frequency >= 7) {
+        description += `- Day 7: Active Recovery - Low-intensity movement and regeneration protocols\n`;
+      }
+      
+      description += `\nThis structure follows an undulating periodization model with strategic sequencing of training stimuli.`;
+    }
+    
+    return description;
+  }
+  
+  generateDeepResponse(sport, experience, goal, frequency, sportData, experienceData, goalData) {
     // Extract injury risks from the object if it exists in that format
     const injuryRisks = sportData.injuryRisks.common ?
       sportData.injuryRisks.common :
@@ -308,7 +471,7 @@ ${sportData.references[0]}`;
       sportData.energySystems.primary :
       sportData.energySystems;
     
-    return `# Comprehensive ${sport} Training Plan for ${experience} - ${goal}
+    return `# Comprehensive ${frequency}-Day ${sport} Training Plan for ${experience} - ${goal}
 
 ## 🧠 Comprehensive Sport-Specific Analysis
 
@@ -355,13 +518,11 @@ Benchmarks: ${sportData.performanceMetrics ? sportData.performanceMetrics.benchm
 ### Mesocycle Structure
 Each 4-week block progressively increases in intensity while maintaining appropriate volume, with week 4 serving as a strategic deload to optimize adaptation.
 
-### Microcycle Organization
-- Day 1: Strength Focus - ${goalData.primaryFocus}
-- Day 2: Sport-Specific Development - ${sportData.keyExercises[0]} and ${sportData.keyExercises[1]}
-- Day 3: Recovery - ${experienceData.recoveryNeeds}
-- Day 4: Power Development - Sport-specific power application
-- Day 5: Conditioning - Energy system development matched to ${sport} demands
-- Day 6-7: Active Recovery - Low-intensity movement and mobility work
+### Microcycle Organization (${frequency}-Day Structure)
+${this.generateMicrocycleDescription(frequency, sport, goalData, sportData, experienceData)}
+
+### Detailed ${frequency}-Day Training Schedule
+${this.generateTrainingDays(frequency, sport, sportData, experienceData, goalData, injuryRisks)}
 
 ## Training Components
 
