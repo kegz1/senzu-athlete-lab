@@ -9,7 +9,11 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ['https://kegz1.github.io', 'http://localhost:3000', 'https://senzu-athlete-lab.onrender.com'],
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev')); // Logging for development
