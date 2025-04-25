@@ -80,6 +80,18 @@ For DEEP SENZU RESEARCH mode, provide a comprehensive scientific exposition with
 - Skill Acquisition Engineering: Motor learning principles with deliberate practice frameworks, technical progression ladders, perceptual-cognitive integration, and contextual interference application
 - Mobility System Architecture: Joint-by-joint approach with specific insufficiency remediation, active vs. passive technique application, neuromuscular recalibration, and integration sequencing
 
+## Biomechanical & Physiological Insights
+- Joint Angle Analysis: Optimal joint angles and ranges of motion for performance and safety
+- Muscle Fiber Type Targeting: Specific protocols for fast-twitch vs. slow-twitch fiber development
+- Torque Load Distribution: Analysis of force vectors and torque loads across movement patterns
+- Neuromuscular Recruitment Patterns: Specific activation sequences and motor unit recruitment strategies
+
+## Injury Prevention & Prehabilitation
+- Movement Screening: Functional movement assessments with corrective strategies
+- Compensatory Pattern Identification: Recognition and correction of dysfunctional movement patterns
+- Prehabilitation Protocols: Targeted exercises to address potential injury sites
+- Reactive Drills: Neuromuscular training to improve proprioception and joint stability
+
 ## Performance Monitoring & Feedback Systems
 - Metric Identification & Assessment: Sport-specific KPIs, progress tracking with statistical significance thresholds, adaptation rate analysis, and multi-factorial performance modeling
 - Intelligent Feedback Mechanisms: Algorithmic program modification based on response patterns, stagnation detection with intervention strategies, load-tolerance calibration, and goal recalibration frameworks
@@ -88,7 +100,17 @@ For DEEP SENZU RESEARCH mode, provide a comprehensive scientific exposition with
 - Evidence Integration System: PubMed/ScienceDirect/JSTOR database integration, CRAAP Test application, lateral reading methodology, and hierarchical evidence classification
 - Knowledge Verification Framework: Citation system with DOI reference, methodological quality assessment, effect size reporting with practical vs. statistical significance distinction, and confidence rating system
 
-Format with clear headers and use markdown for readability. Include specific sets, reps, intensities, and progressions for each of the ${frequency} training days.
+Format with clear headers and use markdown for readability. For each of the ${frequency} training days, provide:
+
+1. A clear training split structure (e.g., Push/Pull/Legs, Upper/Lower, Full Body, etc.)
+2. A specific warm-up protocol tailored to the day's training focus
+3. For each exercise:
+   - Exercise name (with any needed modifications based on equipment or restrictions)
+   - Sets / Reps / Tempo / Rest periods (e.g., "4 x 8 @ 3010 tempo, 90s rest")
+   - Technical cues and coaching notes (e.g., "focus on external rotation" or "pause at bottom")
+4. A mobility and recovery protocol to complete the session
+
+Use a professional, coach-level tone that is direct and results-oriented. Provide expert insights without unnecessary fluff.
 ` : `
 For QUICK RESPONSE mode, provide distilled, actionable training prescriptions with:
 
@@ -109,10 +131,50 @@ For QUICK RESPONSE mode, provide distilled, actionable training prescriptions wi
 - Evidence-based recommendations with primary research sources
 - Key research insights supporting the training approach
 
-Format with clear headers and use markdown for readability. Focus on practical implementation with specific exercises, sets, reps, and rest periods for each of the ${frequency} training days.
+Format with clear headers and use markdown for readability. For each of the ${frequency} training days, provide:
+
+1. A clear training split structure (e.g., Push/Pull/Legs, Upper/Lower, Full Body, etc.)
+2. A brief warm-up protocol
+3. For each exercise:
+   - Exercise name
+   - Sets / Reps / Rest periods
+   - 1-2 key coaching cues
+4. A brief cool-down protocol
+
+Use a direct, actionable tone that focuses on practical implementation.
 `}
 
 The plan must be specific to ${sport.specificLabel} and tailored to a ${parameters.experienceLabel.toLowerCase()} athlete with a primary goal of ${parameters.goalLabel.toLowerCase()}. 
+
+Apply evidence-based training models based on the goal:
+- For Muscle Gain goals: Focus on 6-12 reps, moderate-to-heavy load, high volume, progressive overload
+- For Fat Loss goals: Implement supersets, circuits, short rest periods, and conditioning finishers
+- For Athletic Performance goals: Include CNS priming, plyometrics, reactive drills, and sport-specific movement patterns
+- For Mobility/Recovery goals: Incorporate mobility flows, soft tissue work, and blood flow stimulation techniques
+- For Sport-Specific goals: Prioritize movement patterns and energy systems specific to ${sport.specificLabel}
+
+Apply appropriate training principles based on fitness level:
+- For Novice athletes: Focus on fundamental movement patterns, technique development, and linear progression
+- For Intermediate athletes: Implement undulating periodization, increased volume, and more varied exercise selection
+- For Advanced athletes: Utilize complex programming, specialized techniques (drop sets, cluster sets), and autoregulation
+
+Consider equipment availability and constraints:
+- For Bodyweight training: Emphasize progressive variations, tempo manipulation, and mechanical advantage adjustments
+- For Dumbbell/Kettlebell training: Focus on unilateral movements, stability challenges, and metabolic conditioning
+- For Full Gym access: Incorporate a wider variety of exercises, specialized equipment, and optimal loading strategies
+
+Account for time constraints by optimizing:
+- Volume regulation (total weekly sets based on experience level)
+- Intensity control (e.g., RIR, %1RM estimates)
+- Movement pattern balance (push/pull, hinge/squat/lunge/carry)
+- Progressive overload schedule (linear vs undulating)
+- Rest periods and exercise sequencing (based on energy systems)
+
+${parameters.considerations ? `Address the following special considerations: ${parameters.considerations}
+- Modify exercises to accommodate any injury restrictions
+- Provide alternative movements for problematic exercises
+- Include specific prehabilitation exercises for vulnerable areas
+- Adjust intensity and volume as needed for safety` : ''}
 
 Ensure all ${frequency} training days are fully detailed with specific exercises, sets, reps, intensities, and rest periods. The training frequency is ${frequency} days per week, so create exactly ${frequency} distinct training days.
 
@@ -218,7 +280,7 @@ function generateSummary(advancedContent, sport, parameters) {
     summary += `## Training Schedule\n${trainingDaysContent}\n`;
   } else {
     // Fallback if we couldn't extract the training days
-    summary += `## Training Schedule\n${generateTrainingDays(frequency, sportName)}\n`;
+    summary += `## Training Schedule\n${generateTrainingDays(frequency, sportName, parameters.goalLabel)}\n`;
   }
   
   // Add Scientific Credibility Architecture section
@@ -335,42 +397,296 @@ function expandToAdvanced(quickContent, sport, parameters) {
  * @param {string} sportName - Name of the sport
  * @returns {string} Formatted training days
  */
-function generateTrainingDays(frequency, sportName) {
+function generateTrainingDays(frequency, sportName, goal = 'General Fitness') {
   let trainingDays = '';
   
-  // Define different training day templates
-  const dayTemplates = [
-    {
-      title: "Strength & Movement Development",
-      content: `- Warm-up: 10 minutes of dynamic mobility
-- Main workout: 3-4 sets of 6-10 reps for major muscle groups
+  // Define different training day templates based on goals
+  const goalSpecificTemplates = {
+    'Muscle Gain': [
+      {
+        title: "Upper Body Hypertrophy",
+        content: `- Warm-up: 10 minutes of dynamic mobility focusing on upper body
+- Main workout: 
+  * Bench Press: 4 sets of 8-10 reps at 70-75% 1RM, 90 sec rest
+  * Barbell Rows: 4 sets of 8-10 reps at 70% 1RM, 90 sec rest
+  * Incline Dumbbell Press: 3 sets of 10-12 reps, 60 sec rest
+  * Cable Pulldowns: 3 sets of 10-12 reps, 60 sec rest
+  * Lateral Raises: 3 sets of 12-15 reps, 45 sec rest
+  * Tricep Pushdowns: 3 sets of 12-15 reps, 45 sec rest
+- Cool-down: 5 minutes of upper body mobility work`
+      },
+      {
+        title: "Lower Body Hypertrophy",
+        content: `- Warm-up: 10 minutes of dynamic mobility focusing on lower body
+- Main workout:
+  * Barbell Squats: 4 sets of 8-10 reps at 70-75% 1RM, 2 min rest
+  * Romanian Deadlifts: 4 sets of 8-10 reps at 70% 1RM, 2 min rest
+  * Leg Press: 3 sets of 10-12 reps, 90 sec rest
+  * Walking Lunges: 3 sets of 10-12 reps per leg, 90 sec rest
+  * Seated Calf Raises: 4 sets of 12-15 reps, 60 sec rest
+  * Leg Curls: 3 sets of 12-15 reps, 60 sec rest
+- Cool-down: 5 minutes of lower body mobility work`
+      },
+      {
+        title: "Full Body Hypertrophy",
+        content: `- Warm-up: 10 minutes of full-body dynamic mobility
+- Main workout:
+  * Deadlifts: 4 sets of 6-8 reps at 75-80% 1RM, 2 min rest
+  * Incline Bench Press: 4 sets of 8-10 reps at 70-75% 1RM, 90 sec rest
+  * Pull-ups or Lat Pulldowns: 4 sets of 8-10 reps, 90 sec rest
+  * Dumbbell Shoulder Press: 3 sets of 10-12 reps, 60 sec rest
+  * Bulgarian Split Squats: 3 sets of 10-12 reps per leg, 60 sec rest
+  * Cable Face Pulls: 3 sets of 12-15 reps, 45 sec rest
+- Cool-down: 5 minutes of full-body mobility work`
+      },
+      {
+        title: "Rest & Recovery",
+        content: `- Active recovery: 20-30 minutes of low-intensity activity (walking, swimming, or cycling)
+- Flexibility work: 15-20 minutes of static stretching focusing on major muscle groups
+- Self-myofascial release: 10-15 minutes with foam roller or massage ball
+- Ensure adequate protein intake (1.6-2.2g/kg/day) and caloric surplus`
+      }
+    ],
+    'Fat Loss': [
+      {
+        title: "Upper Body & HIIT",
+        content: `- Warm-up: 5 minutes of dynamic mobility
+- Circuit training (3 rounds, minimal rest between exercises, 60 sec rest between rounds):
+  * Push-ups: 12-15 reps
+  * Dumbbell Rows: 12-15 reps per arm
+  * Shoulder Press: 12-15 reps
+  * TRX/Ring Rows: 12-15 reps
+  * Tricep Dips: 12-15 reps
+- HIIT Finisher: 
+  * 8 rounds of 20 seconds all-out effort (battle ropes, burpees, or mountain climbers), 10 seconds rest
+- Cool-down: 5 minutes of light stretching`
+      },
+      {
+        title: "Lower Body & Metabolic Conditioning",
+        content: `- Warm-up: 5 minutes of dynamic mobility
+- Circuit training (3 rounds, minimal rest between exercises, 60 sec rest between rounds):
+  * Goblet Squats: 15 reps
+  * Kettlebell Swings: 15 reps
+  * Walking Lunges: 10 reps per leg
+  * Step-ups: 10 reps per leg
+  * Glute Bridges: 15 reps
+- Metabolic Finisher:
+  * 10-minute AMRAP (As Many Rounds As Possible): 10 box jumps, 10 kettlebell swings, 10 push-ups
+- Cool-down: 5 minutes of light stretching`
+      },
+      {
+        title: "Full Body Circuit",
+        content: `- Warm-up: 5 minutes of dynamic mobility
+- Superset 1 (4 rounds, 30 sec rest between rounds):
+  * Dumbbell Thrusters: 12 reps
+  * Renegade Rows: 12 reps (6 per side)
+- Superset 2 (4 rounds, 30 sec rest between rounds):
+  * Reverse Lunges with Bicep Curls: 10 reps per leg
+  * Push-up to Side Plank: 10 reps (5 per side)
+- Superset 3 (4 rounds, 30 sec rest between rounds):
+  * Kettlebell Swings: 15 reps
+  * Mountain Climbers: 30 reps (15 per side)
+- Conditioning Finisher:
+  * 5 rounds of 30 seconds jump rope, 30 seconds rest
+- Cool-down: 5 minutes of light stretching`
+      },
+      {
+        title: "Active Recovery & Steady State Cardio",
+        content: `- Steady-state cardio: 30-45 minutes at 65-70% max heart rate (walking, cycling, swimming, or elliptical)
+- Mobility work: 15 minutes focusing on problem areas
+- Self-myofascial release: 10 minutes with foam roller
+- Ensure caloric deficit (15-20% below maintenance) with adequate protein (1.8-2.2g/kg/day)`
+      }
+    ],
+    'Athletic Performance': [
+      {
+        title: "Power & Explosiveness",
+        content: `- Warm-up: 10 minutes of dynamic movement preparation with neural activation
+- CNS Priming: 
+  * 3 sets of 3 reps of box jumps with full recovery
+  * 3 sets of 3 reps of medicine ball throws with full recovery
+- Main workout:
+  * Trap Bar Deadlifts: 5 sets of 3-5 reps at 80-85% 1RM, 2-3 min rest
+  * Weighted Pull-ups: 4 sets of 4-6 reps, 2 min rest
+  * Plyometric Push-ups: 4 sets of 5-8 reps, 90 sec rest
+  * Depth Jumps: 4 sets of 5 reps, 2 min rest
+- Cool-down: Mobility and light stretching`
+      },
+      {
+        title: "Speed & Agility",
+        content: `- Warm-up: 10 minutes of progressive movement preparation
+- Technique drills:
+  * A-skips, B-skips, high knees: 3 sets of 20 meters each
+  * Lateral shuffles: 3 sets of 20 meters each direction
+- Main workout:
+  * Sprint accelerations: 8 sets of 20 meters, full recovery
+  * 5-10-5 agility drill: 6 sets, full recovery
+  * Reactive agility drills: 6 sets with directional cues, full recovery
+- Cool-down: Dynamic flexibility work`
+      },
+      {
+        title: "Strength & Power",
+        content: `- Warm-up: 10 minutes of dynamic movement preparation
+- Main workout:
+  * Back Squats: 5 sets of 5 reps at 80% 1RM, 2-3 min rest
+  * Bench Press: 5 sets of 5 reps at 80% 1RM, 2-3 min rest
+  * Weighted Pull-ups: 4 sets of 5 reps, 2 min rest
+  * Barbell Hip Thrusts: 4 sets of 6 reps, 2 min rest
+  * Single-leg Bounds: 4 sets of 5 reps per leg, 90 sec rest
+- Cool-down: Mobility and light stretching`
+      },
+      {
+        title: "Recovery & Mobility",
+        content: `- Active recovery: 20 minutes of low-intensity movement
+- Mobility flow: 15 minutes targeting ankles, hips, thoracic spine, and shoulders
+- Self-myofascial release: 15 minutes focusing on major muscle groups
+- Contrast therapy: Alternating hot and cold exposure if available
+- Ensure adequate nutrition and hydration for recovery`
+      }
+    ],
+    'Mobility/Recovery': [
+      {
+        title: "Upper Body Mobility & Recovery",
+        content: `- Soft tissue work: 15 minutes with foam roller and lacrosse ball on upper back, shoulders, and arms
+- Mobility sequence:
+  * Scapular wall slides: 3 sets of 10 reps with 5-second holds
+  * Thoracic extensions over foam roller: 3 sets of 10 reps
+  * Shoulder CARs (Controlled Articular Rotations): 3 sets of 5 reps in each direction
+  * Forearm and wrist mobility: 3 sets of 30 seconds each position
+- Gentle strength work:
+  * Band pull-aparts: 3 sets of 15 reps
+  * Face pulls: 3 sets of 15 reps
+  * Prone YTWLs: 2 sets of 8 reps each position
+- Breathing work: 5 minutes of diaphragmatic breathing`
+      },
+      {
+        title: "Lower Body Mobility & Recovery",
+        content: `- Soft tissue work: 15 minutes with foam roller and lacrosse ball on glutes, hamstrings, quads, and calves
+- Mobility sequence:
+  * Hip CARs (Controlled Articular Rotations): 3 sets of 5 reps in each direction
+  * Ankle mobility: 3 sets of 10 reps in each direction
+  * Active hamstring stretches: 3 sets of 8 reps per leg
+  * Hip flexor mobilizations: 3 sets of 30 seconds per side
+- Gentle strength work:
+  * Glute bridges: 3 sets of 15 reps
+  * Calf raises: 3 sets of 15 reps
+  * Bodyweight squats: 2 sets of 15 reps with focus on form
+- Walking: 15 minutes of mindful walking focusing on gait mechanics`
+      },
+      {
+        title: "Full Body Mobility Flow",
+        content: `- Dynamic mobility flow (30 minutes):
+  * Sun salutations or similar flowing sequence: 5 rounds
+  * World's greatest stretch: 5 reps per side
+  * Thoracic rotations: 10 reps per side
+  * Hip flow sequence: 5 minutes
+  * Shoulder flow sequence: 5 minutes
+- Breathing and mindfulness: 10 minutes
+- Light movement: 15 minutes of easy swimming, walking, or cycling for blood flow
+- Hydration focus: Ensure adequate fluid and electrolyte intake`
+      },
+      {
+        title: "Active Recovery & Regeneration",
+        content: `- Low-intensity cardio: 20-30 minutes at 60-65% max heart rate
+- Contrast therapy: Alternating hot and cold exposure if available
+- Self-massage: 20 minutes focusing on problem areas
+- Gentle stretching: 15 minutes of static stretching
+- Sleep optimization: Focus on sleep hygiene and quality
+- Nutrition focus: Anti-inflammatory foods and adequate protein intake`
+      }
+    ],
+    'Sport-Specific': [
+      {
+        title: `${sportName}-Specific Skills & Conditioning`,
+        content: `- Warm-up: 15 minutes of ${sportName}-specific movement preparation
+- Technical skill work:
+  * Sport-specific drills focusing on fundamental movement patterns
+  * Technical practice with progressive complexity
+  * Decision-making elements under controlled conditions
+- Conditioning:
+  * Work-to-rest ratios matching ${sportName} demands
+  * Sport-specific movement patterns at game intensity
+- Cool-down: Recovery protocols specific to ${sportName}`
+      },
+      {
+        title: `${sportName} Strength & Power Development`,
+        content: `- Warm-up: 10 minutes of dynamic mobility focusing on ${sportName}-specific movement patterns
+- Main workout:
+  * Compound exercises targeting primary movement patterns in ${sportName}
+  * Power development using sport-specific force vectors
+  * Unilateral exercises for balance and stability
+  * Core training with rotational and anti-rotational emphasis
+- Cool-down: Mobility work focusing on sport-specific requirements`
+      },
+      {
+        title: `${sportName} Movement Integration`,
+        content: `- Warm-up: 10 minutes of progressive movement preparation
+- Movement skills:
+  * Sport-specific agility drills with increasing complexity
+  * Reactive drills with visual and auditory cues
+  * Deceleration and change of direction training
+  * Sport-specific plyometric progressions
+- Technical integration:
+  * Skill application under fatigue conditions
+  * Scenario-based training with decision-making elements
+- Cool-down: Recovery protocols specific to ${sportName}`
+      },
+      {
+        title: "Recovery & Injury Prevention",
+        content: `- Active recovery: 20 minutes of low-intensity movement
+- Mobility work: 15 minutes targeting ${sportName}-specific problem areas
+- Corrective exercises: Addressing common imbalances in ${sportName}
+- Self-myofascial release: 15 minutes focusing on high-stress areas
+- Recovery nutrition: Focus on replenishing glycogen and supporting tissue repair`
+      }
+    ],
+    'General Fitness': [
+      {
+        title: "Strength & Movement Development",
+        content: `- Warm-up: 10 minutes of dynamic mobility
+- Main workout: 
+  * Squats: 3 sets of 8-10 reps
+  * Push-ups or Bench Press: 3 sets of 8-10 reps
+  * Rows: 3 sets of 8-10 reps
+  * Lunges: 3 sets of 8-10 reps per leg
+  * Core work: 3 sets of 30-45 seconds
 - Cool-down: 5 minutes of targeted mobility work`
-    },
-    {
-      title: "Sport-Specific Development",
-      content: `- Warm-up: Sport-specific drills for 15 minutes
+      },
+      {
+        title: "Sport-Specific Development",
+        content: `- Warm-up: Sport-specific drills for 15 minutes
 - Main workout: Technical practice for 30-45 minutes
 - Cool-down: Mobility exercises for 10 minutes`
-    },
-    {
-      title: "Recovery & Supplementary Work",
-      content: `- Active recovery: 20-30 minutes of low-intensity activity
+      },
+      {
+        title: "Recovery & Supplementary Work",
+        content: `- Active recovery: 20-30 minutes of low-intensity activity
 - Flexibility work: 15-20 minutes of stretching
 - Mental training: 10 minutes of visualization`
-    },
-    {
-      title: "Power & Explosiveness",
-      content: `- Warm-up: Dynamic movement preparation
-- Main workout: Plyometric and explosive training
+      },
+      {
+        title: "Power & Explosiveness",
+        content: `- Warm-up: Dynamic movement preparation
+- Main workout: 
+  * Box jumps: 4 sets of 5 reps
+  * Medicine ball throws: 4 sets of 5 reps
+  * Kettlebell swings: 3 sets of 10 reps
+  * Plyometric push-ups: 3 sets of 5-8 reps
 - Cool-down: Mobility and light stretching`
-    },
-    {
-      title: "Endurance & Conditioning",
-      content: `- Warm-up: Progressive intensity build-up
-- Main workout: Sport-specific conditioning intervals
+      },
+      {
+        title: "Endurance & Conditioning",
+        content: `- Warm-up: Progressive intensity build-up
+- Main workout: 
+  * Interval training: 8 rounds of 30 seconds work, 90 seconds rest
+  * Circuit training: 3 rounds of 5 exercises, 45 seconds work, 15 seconds rest
 - Cool-down: Gradual intensity reduction`
-    }
-  ];
+      }
+    ]
+  };
+  
+  // Select the appropriate templates based on the goal
+  const dayTemplates = goalSpecificTemplates[goal] || goalSpecificTemplates['General Fitness'];
   
   // Generate appropriate number of training days
   for (let i = 1; i <= frequency; i++) {
