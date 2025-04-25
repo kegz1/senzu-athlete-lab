@@ -1,5 +1,5 @@
 // Your Render deployment URL
-const RENDER_URL = 'https://senzu-athlete-lab-api.onrender.com';
+const RENDER_URL = 'https://senzu-athlete-lab-1.onrender.com';
 
 const API_BASE_URL = process.env.NODE_ENV === 'production'
   ? `${RENDER_URL}/api`
