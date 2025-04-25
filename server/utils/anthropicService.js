@@ -20,8 +20,11 @@ class AnthropicService {
    */
   async getCompletion(prompt) {
     if (!this.apiKey) {
+      console.error('ANTHROPIC_API_KEY is not set in environment variables');
       throw new Error('ANTHROPIC_API_KEY is not set in environment variables');
     }
+    
+    console.log('Using Anthropic API with key starting with:', this.apiKey.substring(0, 5) + '...');
     
     try {
       const response = await axios.post(
@@ -57,9 +60,20 @@ class AnthropicService {
     } catch (error) {
       console.error('Anthropic API error:', error.response?.data || error.message);
       
+      // Log detailed error information
+      if (error.response) {
+        console.error('Error status:', error.response.status);
+        console.error('Error headers:', error.response.headers);
+        console.error('Error data:', JSON.stringify(error.response.data, null, 2));
+      } else if (error.request) {
+        console.error('No response received:', error.request);
+      } else {
+        console.error('Error setting up request:', error.message);
+      }
+      
       // Provide a more specific error message if available
       if (error.response?.data?.error) {
-        throw new Error(`Anthropic API error: ${error.response.data.error.message || 'Unknown error'}`);
+        throw new Error(`Anthropic API error: ${error.response.data.error.message || JSON.stringify(error.response.data.error)}`);
       }
       
       throw error;

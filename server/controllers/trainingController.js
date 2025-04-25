@@ -23,7 +23,13 @@ async function generatePlan(sport, parameters, responseMode = 'quick_response') 
     return processedResponse;
   } catch (error) {
     console.error('Error in generatePlan:', error);
-    throw new Error('Failed to generate training plan. Please try again.');
+    // Provide more detailed error information
+    const errorMessage = error.response && error.response.data
+      ? `API Error: ${error.response.data.error || JSON.stringify(error.response.data)}`
+      : error.message || 'Unknown error';
+    
+    console.error('Detailed error:', errorMessage);
+    throw new Error(`Failed to generate training plan: ${errorMessage}`);
   }
 }
 
