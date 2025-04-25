@@ -11,10 +11,11 @@ class Toggle {
     const toggleSwitch = document.createElement('div');
     toggleSwitch.className = 'toggle-switch';
     
-    // Create left label (Quick Response)
+    // Create left label (Quick Protocol Mode)
     const quickLabel = document.createElement('span');
     quickLabel.className = 'toggle-label';
-    quickLabel.textContent = 'Quick Response';
+    quickLabel.textContent = 'Quick Protocol Mode';
+    quickLabel.setAttribute('title', 'Distilled, actionable training prescriptions with essential coaching cues');
     
     // Create toggle switch container
     const toggleWrapper = document.createElement('div');
@@ -30,10 +31,11 @@ class Toggle {
     const toggleSlider = document.createElement('label');
     toggleSlider.setAttribute('for', 'mode-toggle');
     
-    // Create right label (Deep Senzu Research)
+    // Create right label (Advanced Analysis Mode)
     const advancedLabel = document.createElement('span');
     advancedLabel.className = 'toggle-label';
-    advancedLabel.textContent = 'Deep Senzu Research';
+    advancedLabel.textContent = 'Advanced Analysis Mode';
+    advancedLabel.setAttribute('title', 'Comprehensive scientific exposition with detailed physiological mechanisms and research support');
     
     // Add event listener
     this.toggleCheckbox.addEventListener('change', () => {

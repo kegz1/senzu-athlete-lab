@@ -77,8 +77,26 @@ class App {
   
   handleToggleChange(isAdvanced) {
     this.currentResponseMode = isAdvanced ? 'deep_senzu_research' : 'quick_response';
+    
+    // Update toggle label based on mode
+    const toggleLabel = document.querySelector('.toggle-label');
+    if (toggleLabel) {
+      if (isAdvanced) {
+        toggleLabel.textContent = 'Advanced Analysis Mode';
+        toggleLabel.setAttribute('title', 'Comprehensive scientific exposition with detailed physiological mechanisms and research support');
+      } else {
+        toggleLabel.textContent = 'Quick Protocol Mode';
+        toggleLabel.setAttribute('title', 'Distilled, actionable training prescriptions with essential coaching cues');
+      }
+    }
+    
     if (this.currentPlan) {
-      this.results.setContent(this.currentPlan[this.currentResponseMode]);
+      // Add a brief loading effect when switching modes
+      this.showLoading(true);
+      setTimeout(() => {
+        this.results.setContent(this.currentPlan[this.currentResponseMode]);
+        this.showLoading(false);
+      }, 500);
     }
   }
   
