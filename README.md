@@ -103,3 +103,4 @@ SENZU ATHLETE LAB is an AI-powered training system that generates personalized w
 ## License
 
 MIT
+# senzu-athlete-lab
